@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryClientProvider>
         <ThemeProvider>
-          <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+          <body className="max-w-lg min-h-screen m-auto bg">{children}</body>
         </ThemeProvider>
       </ReactQueryClientProvider>
     </html>
