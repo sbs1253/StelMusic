@@ -1,12 +1,15 @@
-export default function Home() {
+import { Suspense } from 'react';
+import PlaylistContent from './components/PlaylistContent';
+import { fetchYoutubePlaylist } from './actions/youtube.action';
+
+export default async function PlaylistViewer() {
+  const initialData = await fetchYoutubePlaylist();
   return (
-    <div>
-      // 멤버 카드 컴포넌트
-      <div className="bg-gradient-to-b from-gang-primary to-gang-secondary p-4 rounded-lg">
-        <div className="text-gang-member-text">GANG Z1 멤버</div>
-      </div>
-      // 그룹 헤더
-      <div className="bg-mystic-primary text-mystic-text p-2">MYSTIC</div>
-    </div>
+    <>
+      <Suspense fallback={<div>로딩 중...</div>}>
+        <PlaylistContent initialData={initialData} />
+      </Suspense>
+      {/* <PlaylistContent /> */}
+    </>
   );
 }

@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryClientProvider>
         <ThemeProvider>
-          <body className="max-w-lg min-h-screen m-auto bg">{children}</body>
+          <body className="max-w-lg min-h-screen m-auto ">{children}</body>
         </ThemeProvider>
       </ReactQueryClientProvider>
     </html>
