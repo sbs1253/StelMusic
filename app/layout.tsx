@@ -26,11 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ReactQueryClientProvider>
-        <ThemeProvider>
-          <body className="max-w-lg min-h-screen m-auto bg">{children}</body>
-        </ThemeProvider>
-      </ReactQueryClientProvider>
+      <body className="max-w-lg min-h-screen m-auto ">
+        <ReactQueryClientProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </ReactQueryClientProvider>
+      </body>
     </html>
   );
 }
