@@ -9,7 +9,6 @@ export default async function PlaylistViewer() {
       <Suspense fallback={<div>로딩 중...</div>}>
         <PlaylistContent initialData={initialData} />
       </Suspense>
-      {/* <PlaylistContent /> */}
     </>
   );
 }

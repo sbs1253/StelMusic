@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { fetchYoutubePlaylist } from 'app/actions/youtube.action';
-
 export default function PlaylistContent({ initialData }) {
   const { data, isPending, error } = useQuery({
     queryKey: ['playlist'],

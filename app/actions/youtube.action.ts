@@ -7,7 +7,6 @@ export async function fetchYoutubePlaylist() {
     const playlistResponse = await fetch(
       `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`,
       {
-        cache: 'force-cache',
         next: { revalidate: 3600 }, // 1시간마다 재검증
       }
     );
@@ -22,7 +21,6 @@ export async function fetchYoutubePlaylist() {
     const videoResponse = await fetch(
       `https://youtube.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${YOUTUBE_API_KEY}`,
       {
-        cache: 'force-cache',
         next: { revalidate: 3600 },
       }
     );
