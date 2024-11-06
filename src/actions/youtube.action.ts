@@ -1,5 +1,14 @@
+import { YoutubeVideo } from 'src/mocks/types_db';
+import { mockYoutubeData } from 'src/mocks/youtubeData';
+
 // app/actions/youtube.action.ts
 export async function fetchYoutubePlaylist() {
+  // 개발 환경에서는 mock 데이터 사용
+  if (process.env.NODE_ENV === 'development') {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return mockYoutubeData as YoutubeVideo[];
+  }
+
   const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
   const PLAYLIST_ID = process.env.NEXT_PUBLIC_PLAYLIST_ID;
 
