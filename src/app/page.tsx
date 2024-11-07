@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import UI from 'src/app/ui';
 
 export default async function PlaylistViewer() {
-  const initialData = await fetchYoutubePlaylist();
+  const initialData = await fetchYoutubePlaylist('likes');
   return (
     <>
       <Suspense fallback={<div>로딩 중...</div>}>

@@ -115,7 +115,7 @@ const config: Config = {
       'cliche-member-4-text': '#2e7d32',
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'), require('tailwind-scrollbar-hide')],
 };
 
 export default withMT(config);

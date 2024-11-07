@@ -1,8 +1,7 @@
 import { YoutubeVideo } from 'src/mocks/types_db';
 import { mockYoutubeData } from 'src/mocks/youtubeData';
-
 // app/actions/youtube.action.ts
-export async function fetchYoutubePlaylist() {
+export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
   // 개발 환경에서는 mock 데이터 사용
   if (process.env.NODE_ENV === 'development') {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -39,17 +38,32 @@ export async function fetchYoutubePlaylist() {
     }
 
     const videoData = await videoResponse.json();
-
-    return videoData.items
-      .map((video) => ({
-        id: video.id,
-        viewCount: parseInt(video.statistics.viewCount, 10),
-        likeCount: parseInt(video.statistics.likeCount, 10) || 0,
-        snippet: playlistData.items.find((item) => item.snippet.resourceId.videoId === video.id).snippet,
-      }))
-      .sort((a, b) => b.viewCount - a.viewCount);
+    const videos = videoData.items.map((video) => ({
+      id: video.id,
+      viewCount: parseInt(video.statistics.viewCount, 10),
+      likeCount: parseInt(video.statistics.likeCount, 10) || 0,
+      snippet: playlistData.items.find((item) => item.snippet.resourceId.videoId === video.id).snippet,
+    }));
+    return sortVideos(videos, sortBy);
   } catch (error) {
     console.error('Error fetching playlist:', error);
     throw error;
   }
+}
+
+export type SortType = 'views' | 'likes' | 'date';
+
+function sortVideos(videos: YoutubeVideo[], sortBy: SortType) {
+  return [...videos].sort((a, b) => {
+    switch (sortBy) {
+      case 'views':
+        return b.viewCount - a.viewCount;
+      case 'likes':
+        return b.likeCount - a.likeCount;
+      case 'date':
+        return new Date(b.snippet.publishedAt).getTime() - new Date(a.snippet.publishedAt).getTime();
+      default:
+        return b.viewCount - a.viewCount;
+    }
+  });
 }
