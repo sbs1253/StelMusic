@@ -5,7 +5,7 @@ export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
   // 개발 환경에서는 mock 데이터 사용
   if (process.env.NODE_ENV === 'development') {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockYoutubeData as YoutubeVideo[];
+    return sortVideos(mockYoutubeData, sortBy) as YoutubeVideo[];
   }
 
   const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
@@ -15,7 +15,7 @@ export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
     const playlistResponse = await fetch(
       `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`,
       {
-        next: { revalidate: 3600 }, // 1시간마다 재검증
+        next: { revalidate: 3600 },
       }
     );
 

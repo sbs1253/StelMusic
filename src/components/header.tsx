@@ -1,6 +1,5 @@
 import Logo from 'src/components/logo';
 import Link from 'next/link';
-import React from 'react';
 
 const logo = [
   {

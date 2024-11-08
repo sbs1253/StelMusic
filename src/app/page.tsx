@@ -1,6 +1,6 @@
 import { fetchYoutubePlaylist } from 'src/actions/youtube.action';
+import { fetchYoutubeChannels } from '@/actions/youtubeThumbnails.action';
 import { Suspense } from 'react';
-
 import UI from 'src/app/ui';
 
 export default async function PlaylistViewer() {
