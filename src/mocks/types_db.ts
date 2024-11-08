@@ -31,3 +31,5 @@ type Thumbnail = {
   width: number;
   height: number;
 };
+
+export type SortType = 'views' | 'likes' | 'date';

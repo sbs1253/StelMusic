@@ -1,4 +1,5 @@
-import { YoutubeVideo } from 'src/mocks/types_db';
+import sortVideos from '@/utils/sortVideos';
+import { SortType, YoutubeVideo } from 'src/mocks/types_db';
 import { mockYoutubeData } from 'src/mocks/youtubeData';
 // app/actions/youtube.action.ts
 export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
@@ -49,21 +50,4 @@ export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
     console.error('Error fetching playlist:', error);
     throw error;
   }
-}
-
-export type SortType = 'views' | 'likes' | 'date';
-
-function sortVideos(videos: YoutubeVideo[], sortBy: SortType) {
-  return [...videos].sort((a, b) => {
-    switch (sortBy) {
-      case 'views':
-        return b.viewCount - a.viewCount;
-      case 'likes':
-        return b.likeCount - a.likeCount;
-      case 'date':
-        return new Date(b.snippet.publishedAt).getTime() - new Date(a.snippet.publishedAt).getTime();
-      default:
-        return b.viewCount - a.viewCount;
-    }
-  });
 }
