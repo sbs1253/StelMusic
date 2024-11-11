@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  * {
+    scrollbar-width: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}
 .swiper {
   padding: 1rem !important;
 }

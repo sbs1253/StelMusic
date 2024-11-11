@@ -4,6 +4,8 @@ import TagList from './tagList';
 import VideoTopRankingCard from '@/components/videoTopRankingCard';
 import { SortType, YoutubeVideo } from 'src/mocks/types_db';
 import { useRouter } from 'next/navigation';
+import VideoRankingCard from '@/components/videoRankingCard';
+import Header from '@/app/ranking/header';
 
 interface ContentProps {
   initialVideos: YoutubeVideo[];
@@ -44,11 +46,14 @@ export default function Ui({ initialVideos, currentTag }: ContentProps) {
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <TagList tagList={tagList} selectedTag={currentTag || 'views'} handleTagSelect={handleTagSelect} />
-      <div className="mt-8 space-y-4">
-        {(isLoading ? initialVideos : videos).map((video, index) => (
-          <VideoTopRankingCard key={video.id} video={video} index={index} />
+    <div className="container mx-auto h-screen overflow-y-auto">
+      <div className="sticky top-0 left-0 z-[9999]  backdrop-blur-md bg-brand-background">
+        <Header />
+        <TagList selectedTag={currentTag || 'views'} handleTagSelect={handleTagSelect} />
+      </div>
+      <div className="m-2">
+        {videos.map((video, index) => (
+          <VideoRankingCard key={video.id} video={video} index={index} selectedTag={currentTag || 'views'} />
         ))}
       </div>
     </div>

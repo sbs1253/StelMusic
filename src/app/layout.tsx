@@ -28,12 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="max-w-lg min-h-screen m-auto border border-black">
+      <body className="max-w-lg max-h-screen m-auto border border-black">
         <ReactQueryClientProvider>
-          <ThemeProvider>
-            <Header />
-            {children}
-          </ThemeProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </ReactQueryClientProvider>
       </body>
     </html>

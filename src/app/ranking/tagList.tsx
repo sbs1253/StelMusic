@@ -1,23 +1,44 @@
-interface TagListProps {
-  tagList: { [key: string]: string }[];
-  selectedTag: string;
-  handleTagSelect: (tag: string) => void;
-}
-
-export default function TagList({ tagList, selectedTag, handleTagSelect }: TagListProps) {
+import { Tabs, TabsHeader, Tab } from '@material-tailwind/react';
+import { useState } from 'react';
+export default function TagList({ selectedTag, handleTagSelect }) {
+  const [activeTab, setActiveTab] = useState(selectedTag);
+  const tagList = [
+    {
+      label: '조회순',
+      value: 'views',
+    },
+    {
+      label: '좋아요순',
+      value: 'likes',
+    },
+    {
+      label: '날짜순',
+      value: 'date',
+    },
+  ];
+  const handleClick = (newValue: string) => {
+    setActiveTab(newValue);
+    handleTagSelect(newValue);
+  };
   return (
-    <div className="flex gap-2">
-      {tagList.map((tag) => (
-        <button
-          key={tag.name}
-          onClick={() => handleTagSelect(tag.value)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-            selectedTag === tag.value ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          {tag.name}
-        </button>
-      ))}
-    </div>
+    <Tabs value={activeTab} className="pt-3">
+      <TabsHeader
+        className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+        indicatorProps={{
+          className: 'bg-transparent border-b-2 border-brand-primary shadow-none rounded-none',
+        }}
+      >
+        {tagList.map(({ label, value }) => (
+          <Tab
+            key={value}
+            value={value}
+            className={activeTab === value ? 'font-medium' : ''}
+            onClick={() => handleClick(value)}
+          >
+            {label}
+          </Tab>
+        ))}
+      </TabsHeader>
+    </Tabs>
   );
 }
