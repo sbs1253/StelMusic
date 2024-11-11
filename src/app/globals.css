@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    scrollbar-width: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}
+.swiper {
+  padding: 1rem !important;
+}
+
+/* 네비게이션 버튼 스타일링 */
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
+  background: rgba(0, 0, 0, 0.3);
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50%;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 1.2rem !important;
+}
+
+/* 버튼 hover 효과 */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* 버튼 비활성화 상태 */
+.swiper-button-disabled {
+  opacity: 0 !important;
+}

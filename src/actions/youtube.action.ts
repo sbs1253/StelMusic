@@ -1,5 +1,14 @@
+import sortVideos from '@/utils/sortVideos';
+import { SortType, YoutubeVideo } from 'src/mocks/types_db';
+import { mockYoutubeData } from 'src/mocks/youtubeData';
 // app/actions/youtube.action.ts
-export async function fetchYoutubePlaylist() {
+export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
+  // 개발 환경에서는 mock 데이터 사용
+  if (process.env.NODE_ENV === 'development') {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return sortVideos(mockYoutubeData, sortBy) as YoutubeVideo[];
+  }
+
   const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
   const PLAYLIST_ID = process.env.NEXT_PUBLIC_PLAYLIST_ID;
 
@@ -7,7 +16,7 @@ export async function fetchYoutubePlaylist() {
     const playlistResponse = await fetch(
       `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`,
       {
-        next: { revalidate: 3600 }, // 1시간마다 재검증
+        next: { revalidate: 3600 },
       }
     );
 
@@ -30,15 +39,13 @@ export async function fetchYoutubePlaylist() {
     }
 
     const videoData = await videoResponse.json();
-
-    return videoData.items
-      .map((video) => ({
-        id: video.id,
-        viewCount: parseInt(video.statistics.viewCount, 10),
-        likeCount: parseInt(video.statistics.likeCount, 10) || 0,
-        snippet: playlistData.items.find((item) => item.snippet.resourceId.videoId === video.id).snippet,
-      }))
-      .sort((a, b) => b.viewCount - a.viewCount);
+    const videos = videoData.items.map((video) => ({
+      id: video.id,
+      viewCount: parseInt(video.statistics.viewCount, 10),
+      likeCount: parseInt(video.statistics.likeCount, 10) || 0,
+      snippet: playlistData.items.find((item) => item.snippet.resourceId.videoId === video.id).snippet,
+    }));
+    return sortVideos(videos, sortBy);
   } catch (error) {
     console.error('Error fetching playlist:', error);
     throw error;

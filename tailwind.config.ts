@@ -3,17 +3,13 @@ import withMT from '@material-tailwind/react/utils/withMT';
 
 const config: Config = {
   content: [
-    './utils/**/*.{js,ts,jsx,tsx,mdx}',
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/utils/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {},
-    borderRadius: {
-      'button-default': '5px',
-      'tag-button': '17.5px',
-    },
     fontSize: {
       xs: [
         '12px',
@@ -119,7 +115,7 @@ const config: Config = {
       'cliche-member-4-text': '#2e7d32',
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'), require('tailwind-scrollbar-hide')],
 };
 
 export default withMT(config);

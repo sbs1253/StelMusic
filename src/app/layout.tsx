@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import ReactQueryClientProvider from 'app/config/ReactQueryClientProvider';
-import { ThemeProvider } from 'app/config/material-tailwind-theme-provider';
+import ReactQueryClientProvider from 'src/config/ReactQueryClientProvider';
+import { ThemeProvider } from 'src/config/material-tailwind-theme-provider';
+import Header from 'src/components/header';
+
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -26,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="max-w-lg min-h-screen m-auto ">
+      <body className="max-w-lg max-h-screen m-auto border border-black">
         <ReactQueryClientProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </ReactQueryClientProvider>
