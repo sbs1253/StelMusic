@@ -1,21 +1,22 @@
 import { Tabs, TabsHeader, Tab } from '@material-tailwind/react';
 import { useState } from 'react';
+
+const tagList = [
+  {
+    label: '조회순',
+    value: 'views',
+  },
+  {
+    label: '좋아요순',
+    value: 'likes',
+  },
+  {
+    label: '날짜순',
+    value: 'date',
+  },
+];
 export default function TagList({ selectedTag, handleTagSelect }) {
   const [activeTab, setActiveTab] = useState(selectedTag);
-  const tagList = [
-    {
-      label: '조회순',
-      value: 'views',
-    },
-    {
-      label: '좋아요순',
-      value: 'likes',
-    },
-    {
-      label: '날짜순',
-      value: 'date',
-    },
-  ];
   const handleClick = (newValue: string) => {
     setActiveTab(newValue);
     handleTagSelect(newValue);

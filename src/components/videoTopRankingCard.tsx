@@ -10,7 +10,7 @@ export default function VideoTopRankingCard({ video, index }) {
 
         {/* Thumbnail */}
         <Image
-          src={video.snippet.thumbnails.medium.url}
+          src={video.snippet.thumbnails.medium.url1}
           alt={video.snippet.title}
           width={100}
           height={100}
