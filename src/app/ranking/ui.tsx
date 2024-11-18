@@ -16,8 +16,9 @@ interface ContentProps {
 export default function Ui({ initialVideos, currentTag }: ContentProps) {
   const router = useRouter();
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(new Set());
-  const { videos, error } = useYoutubeVideos(currentTag, initialVideos);
-
+  // const { videos, error } = useYoutubeVideos(currentTag, initialVideos);
+  const videos = initialVideos;
+  console.log(videos);
   const { handlePlayAll, handlePlaySelected } = usePlaylist({
     videos: initialVideos,
     selectedMusic,
@@ -38,23 +39,17 @@ export default function Ui({ initialVideos, currentTag }: ContentProps) {
       return newSelected;
     });
   };
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen text-red-500">
-        오류가 발생했습니다. 잠시 후 다시 시도해주세요.
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen text-red-500">
+  //       오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">
-      <PageHeader
-        title="인기 순위"
-        selectedTag={currentTag}
-        handleTagSelect={handleTagSelect}
-        showPlayButton={true}
-        videos={videos}
-      />
+      <PageHeader title="인기 순위" selectedTag={currentTag} handleTagSelect={handleTagSelect} />
       <div className="pb-[48px]">
         {videos.map((video, index) => (
           <VideoRankingCard
