@@ -6,11 +6,11 @@ import { Suspense } from 'react';
 
 export default async function page({ searchParams }) {
   const currentTag = (searchParams.q || 'views') as SortType;
-  const initialVideos = await fetchYoutubePlaylist(currentTag);
-  const exData = await fetchPlaylistData();
+  // const initialVideos = await fetchYoutubePlaylist(currentTag);
+  const initialVideos = await fetchPlaylistData();
   return (
     <Suspense fallback={<RankingSkeleton />}>
-      <Ui initialVideos={exData} currentTag={currentTag} />
+      <Ui initialVideos={initialVideos} currentTag={currentTag} />
     </Suspense>
   );
 }

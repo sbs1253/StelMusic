@@ -18,7 +18,6 @@ export default function Ui({ initialVideos, currentTag }: ContentProps) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(new Set());
   // const { videos, error } = useYoutubeVideos(currentTag, initialVideos);
   const videos = initialVideos;
-  console.log(videos);
   const { handlePlayAll, handlePlaySelected } = usePlaylist({
     videos: initialVideos,
     selectedMusic,

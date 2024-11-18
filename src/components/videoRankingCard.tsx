@@ -14,7 +14,7 @@ export default function VideoRankingCard({ video, index, selectedTag, toggleMusi
       }`}
       onClick={() => toggleMusic(video.id)}
     >
-      <p className={`w-4 text-center font-bold ${index < 3 ? 'text-brand-primary' : 'text-brand-secondary'}`}>
+      <p className={`w-5 mr-2 text-center font-bold ${index < 3 ? 'text-brand-primary' : 'text-brand-secondary'}`}>
         {index + 1}
       </p>
       {/* <Image

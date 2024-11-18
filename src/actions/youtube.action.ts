@@ -50,14 +50,17 @@ export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
 }
 
 export async function fetchPlaylistData() {
+  if (process.env.NODE_ENV === 'development') {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return sortVideos(mockYoutubeData, 'views') as YoutubeVideo[];
+  }
   let allItems = [];
   let nextPageToken = null;
   const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-  const PLAYLIST_ID = 'PLLjd981H8qSN9PQ8-X6wINqBF1GjGxusy';
-  const playListIds = ['PLLjd981H8qSN9PQ8-X6wINqBF1GjGxusy', 'PLLjd981H8qSMGC4Nir0hD2Gj9n9PDUoHX'];
+  const PLAYLIST_IDS = ['PLLjd981H8qSN9PQ8-X6wINqBF1GjGxusy', 'PLLjd981H8qSMGC4Nir0hD2Gj9n9PDUoHX'];
 
   await Promise.all(
-    playListIds.map(async (id) => {
+    PLAYLIST_IDS.map(async (id) => {
       do {
         const pageTokenParam = nextPageToken ? `&pageToken=${nextPageToken}` : '';
         const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${id}&key=${YOUTUBE_API_KEY}${pageTokenParam}`;
@@ -101,8 +104,8 @@ export async function fetchPlaylistData() {
       snippet: allItems.find((item) => item.snippet.resourceId.videoId === video.id).snippet,
     }));
     allVideos = [...allVideos, ...videos];
-    return sortVideos(allVideos, 'views');
   }
+  return sortVideos(allVideos, 'views');
 }
 
 // 50개씩 나눠서 요청하기 위한 함수
