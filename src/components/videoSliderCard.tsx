@@ -6,7 +6,7 @@ export default function VideoDateCard({ video }) {
   return (
     <div className="w-[250px] ">
       <Image
-        src={video.snippet.thumbnails.high.url}
+        src={video.snippet.thumbnails.high.url1}
         alt={video.snippet.title}
         width={300}
         height={300}

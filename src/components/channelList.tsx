@@ -20,7 +20,7 @@ const channels = [
   'YUZUHA_RIKO',
 ];
 
-export default function channelList() {
+export default function ChannelList() {
   return (
     <div>
       <Swiper slidesPerView="auto" spaceBetween={10} freeMode={true} modules={[FreeMode]} className="mySwiper">

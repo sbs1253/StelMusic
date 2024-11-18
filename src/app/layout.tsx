@@ -4,6 +4,7 @@ import './globals.css';
 import ReactQueryClientProvider from 'src/config/ReactQueryClientProvider';
 import { ThemeProvider } from 'src/config/material-tailwind-theme-provider';
 import Header from 'src/components/header';
+import Footer from '@/components/footer';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -27,10 +28,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="max-w-lg max-h-screen m-auto border border-black">
+    <html lang="ko">
+      <body>
         <ReactQueryClientProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <div className="min-h-screen flex flex-col mx-auto max-w-lg border border-black relative pb-16">
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </ThemeProvider>
         </ReactQueryClientProvider>
       </body>
     </html>
