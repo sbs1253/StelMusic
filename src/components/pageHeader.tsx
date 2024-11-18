@@ -3,7 +3,13 @@ import { IconButton } from '@material-tailwind/react';
 import Link from 'next/link';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-export default function PageHeader({ selectedTag, handleTagSelect, showPlayButton, videos, title }) {
+interface PageHeaderProps {
+  selectedTag?: string;
+  handleTagSelect?: (tag: string) => void;
+  title: string;
+}
+
+export default function PageHeader({ selectedTag, handleTagSelect, title }: PageHeaderProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-[9999] max-w-lg mx-auto bg-white/80 backdrop-blur-md border-b">
       <Link href={'/'} className="absolute left-1 top-1">

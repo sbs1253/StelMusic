@@ -16,7 +16,7 @@ interface ContentProps {
 export default function Ui({ initialVideos, currentTag }: ContentProps) {
   const router = useRouter();
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(new Set());
-  const { videos, isLoading, error } = useYoutubeVideos(currentTag, initialVideos);
+  const { videos, error } = useYoutubeVideos(currentTag, initialVideos);
 
   const { handlePlayAll, handlePlaySelected } = usePlaylist({
     videos: initialVideos,
@@ -38,10 +38,6 @@ export default function Ui({ initialVideos, currentTag }: ContentProps) {
       return newSelected;
     });
   };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-screen text-red-500">

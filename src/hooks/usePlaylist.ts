@@ -29,6 +29,7 @@ export function usePlaylist({ videos, selectedMusic }: UsePlaylistProps) {
   const handlePlaySelected = () => {
     if (!selectedMusic) return;
     const selectedVideos = videos.filter((video) => selectedMusic.has(video.id));
+    console.log(selectedVideos);
     createPlaylist(selectedVideos);
   };
 

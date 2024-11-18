@@ -15,12 +15,12 @@ export default function Footer() {
   const navigation = [
     { name: '홈', href: '/', icon: HomeIcon },
     { name: '인기순위', href: '/ranking', icon: WhatshotIcon },
-    { name: '채널', href: '/channels', icon: SubscriptionsIcon },
+    { name: '채널', href: '/channel', icon: SubscriptionsIcon },
     { name: '내정보', href: '/profile', icon: PersonIcon },
   ];
 
   return (
-    <footer className="fixed bottom-0 w-full max-w-lg bg-white border-t">
+    <footer className="fixed bottom-0 w-full max-w-lg bg-white">
       <nav className="flex justify-around items-center h-16">
         {navigation.map((item) => {
           const Icon = item.icon;
@@ -28,8 +28,8 @@ export default function Footer() {
 
           return (
             <Link key={item.name} href={item.href} className="flex flex-col items-center gap-1">
-              <Icon className={`${isActive ? 'text-blue-500' : 'text-gray-500'}`} sx={{ fontSize: 24 }} />
-              <span className={`text-xs ${isActive ? 'text-blue-500' : 'text-gray-500'}`}>{item.name}</span>
+              <Icon className={`${isActive ? 'text-brand-primary' : 'text-gray-500'}`} sx={{ fontSize: 24 }} />
+              <span className={`text-xs ${isActive ? 'text-brand-primary' : 'text-gray-500'}`}>{item.name}</span>
             </Link>
           );
         })}
