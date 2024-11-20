@@ -3,6 +3,10 @@
 import { channels } from '@/mocks/channel';
 
 export async function fetchYoutubeChannels() {
+  if (process.env.NODE_ENV === 'development') {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    return channels;
+  }
   const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
   const channelIds = Object.values(channels)
     .map((channel) => channel.id)
