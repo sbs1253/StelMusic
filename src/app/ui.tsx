@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { LatestMusicSection } from '@/components/latestMusicSection';
 import { VideoSliderSkeleton } from '@/components/skeleton/videoSliderSkeleton';
 import { TopRankingSkeleton } from '@/components/skeleton/topRankingSkeleton';
-import { TopRankingSection } from '@/components/topRankingSection';
-import ChannelSection from '../components/channelSection';
+import { TopRankingSection } from '@/app/components/topRankingSection';
+import ChannelSection from './components/channelSection';
 import { ChannelListSkeleton } from '@/components/skeleton/channelListSkeleton';
 
 export default function UI({ initialData }) {

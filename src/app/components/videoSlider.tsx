@@ -5,7 +5,7 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import VideoDateCard from '@/components/VideoSliderCard';
+import VideoDateCard from '@/app/components/videoSliderCard';
 
 export default function VideoSlider({ videos }) {
   return (

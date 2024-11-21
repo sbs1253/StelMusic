@@ -1,0 +1,13 @@
+export const CHANNEL_LIST = [
+  'STEL_LIVE',
+  'AIRI_KANNA',
+  'AYAYSUNO_YUNI',
+  'SHIRAYUKI_HINA',
+  'NENEKO_MASHIRO',
+  'AKANE_LIZE',
+  'ARAHASHI_TABI',
+  'TENKO_SHIBUKI',
+  'HANAKO_NANA',
+  'AOKUMO_RIN',
+  'YUZUHA_RIKO',
+] as const;

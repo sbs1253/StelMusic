@@ -1,7 +1,7 @@
 'use client';
 
 import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
-import VideoTopRankingCard from '@/components/VideoTopRankingCard';
+import TopRankingCard from '@/app/components/topRankingCard';
 
 export function TopRankingSection({ initialData }) {
   const { data } = useYoutubeVideos({
@@ -13,7 +13,7 @@ export function TopRankingSection({ initialData }) {
   return (
     <div className="flex flex-col gap-2">
       {data.map((video, index) => (
-        <VideoTopRankingCard key={video.id} video={video} index={index} />
+        <TopRankingCard key={video.id} video={video} index={index} />
       ))}
     </div>
   );

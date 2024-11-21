@@ -2,7 +2,7 @@
 import { fetchYoutubeChannels } from '@/actions/youtubeThumbnails.action';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-export function useChannelQuery(initialData) {
+export function useChannelQuery(initialData?: any) {
   return useSuspenseQuery({
     queryKey: ['YoutubeChannels'],
     queryFn: () => fetchYoutubeChannels(),

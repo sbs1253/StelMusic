@@ -1,7 +1,7 @@
 import { flexRow } from '@/mixins/styles';
 import Image from 'next/image';
 
-export default function VideoTopRankingCard({ video, index }) {
+export default function TopRankingCard({ video, index }) {
   return (
     <div className="relative p-2 pl-0 transition-all duration-200 hover:translate-y-[-1rem] hover:shadow-lg">
       <div className={`w-full h-full ${flexRow} justify-start items-center gap-3`}>

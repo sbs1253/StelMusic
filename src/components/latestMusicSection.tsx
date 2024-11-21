@@ -1,7 +1,7 @@
 'use client';
 
 import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
-import VideoSlider from '@/components/VideoSlider';
+import VideoSlider from '@/app/components/videoSlider';
 
 export function LatestMusicSection({ initialData }) {
   const { data } = useYoutubeVideos({
