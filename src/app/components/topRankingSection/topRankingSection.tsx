@@ -1,9 +1,9 @@
 'use client';
 
 import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
-import TopRankingCard from '@/app/components/topRankingCard';
+import TopRankingCard from '@/app/components/topRankingSection/topRankingCard';
 
-export function TopRankingSection({ initialData }) {
+export default function TopRankingSection({ initialData }) {
   const { data } = useYoutubeVideos({
     sortBy: 'views',
     initialData,

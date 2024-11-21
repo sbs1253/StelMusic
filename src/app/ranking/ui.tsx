@@ -2,10 +2,10 @@
 import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
 import { SortType, YoutubeVideo } from 'src/mocks/types_db';
 import { useRouter } from 'next/navigation';
-import VideoRankingCard from '@/components/videoRankingCard';
-import PageHeader from '@/components/pageHeader';
+import VideoRankingCard from '@/app/ranking/components/videoRankingCard';
+import PageHeader from '@/app/ranking/components/pageHeader';
 import { useState } from 'react';
-import PlaybackControl from '@/components/playControl';
+import PlaybackControl from '@/app/ranking/components/playControl';
 import { usePlaylist } from '@/hooks/usePlaylist';
 
 interface ContentProps {
@@ -16,7 +16,7 @@ interface ContentProps {
 export default function Ui({ initialVideos, currentTag }: ContentProps) {
   const router = useRouter();
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(new Set());
-  const { videos, error } = useYoutubeVideos(currentTag, initialVideos);
+  const { data: videos, error } = useYoutubeVideos({ sortBy: currentTag, initialData: initialVideos });
 
   const { handlePlayAll, handlePlaySelected } = usePlaylist({
     videos: initialVideos,
@@ -48,13 +48,7 @@ export default function Ui({ initialVideos, currentTag }: ContentProps) {
 
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">
-      <PageHeader
-        title="인기 순위"
-        selectedTag={currentTag}
-        handleTagSelect={handleTagSelect}
-        showPlayButton={true}
-        videos={videos}
-      />
+      <PageHeader title="인기 순위" selectedTag={currentTag} handleTagSelect={handleTagSelect} />
       <div className="pb-[48px]">
         {videos.map((video, index) => (
           <VideoRankingCard

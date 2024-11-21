@@ -2,21 +2,18 @@
 
 import React, { Suspense } from 'react';
 import Link from 'next/link';
-import { LatestMusicSection } from '@/components/latestMusicSection';
-import { VideoSliderSkeleton } from '@/components/skeleton/videoSliderSkeleton';
-import { TopRankingSkeleton } from '@/components/skeleton/topRankingSkeleton';
+import { LatestMusicSection } from './components/latestMusicSection';
 import { TopRankingSection } from '@/app/components/topRankingSection';
-import ChannelSection from './components/channelSection';
-import { ChannelListSkeleton } from '@/components/skeleton/channelListSkeleton';
+import { ChannelSection } from '@/app/components/channelSection';
 
-export default function UI({ initialData }) {
+export default function UI({ initialData, initialChannel }) {
   return (
     <div className="flex flex-col gap-6 p-4">
       {/* 최신 음악 섹션 */}
       <section>
         <h1 className="text-xl font-bold text-brand-text mb-4">최신 음악</h1>
-        <Suspense fallback={<VideoSliderSkeleton />}>
-          <LatestMusicSection initialData={initialData} />
+        <Suspense fallback={<LatestMusicSection.Skeleton />}>
+          <LatestMusicSection videos={initialData} />
         </Suspense>
       </section>
 
@@ -28,7 +25,7 @@ export default function UI({ initialData }) {
             전체보기
           </Link>
         </div>
-        <Suspense fallback={<TopRankingSkeleton />}>
+        <Suspense fallback={<TopRankingSection.Skeleton />}>
           <TopRankingSection initialData={initialData} />
         </Suspense>
       </section>
@@ -36,8 +33,8 @@ export default function UI({ initialData }) {
       {/* 채널 섹션 */}
       <section>
         <h1 className="text-xl font-bold mb-4">채널</h1>
-        <Suspense fallback={<ChannelListSkeleton />}>
-          <ChannelSection />
+        <Suspense fallback={<ChannelSection.Skeletion />}>
+          <ChannelSection initialChannel={initialChannel} />
         </Suspense>
       </section>
     </div>

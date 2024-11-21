@@ -1,4 +1,4 @@
-export function TopRankingSkeleton() {
+export default function TopRankingSkeleton() {
   return (
     <div className="space-y-4">
       {[...Array(5)].map((_, i) => (

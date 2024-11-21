@@ -9,14 +9,15 @@ export default function TopRankingCard({ video, index }) {
         <p className={`w-10 text-center font-bold ${index < 3 ? 'text-amber-500' : 'text-blue-500'}`}>{index + 1}</p>
 
         {/* Thumbnail */}
-        <Image
+        {/* <Image
           src={video.snippet.thumbnails.medium.url1}
           alt={video.snippet.title}
           width={100}
           height={100}
           className="rounded-lg object-contain"
           style={{ width: '100px', height: 'auto' }}
-        />
+        /> */}
+        <div className="w-[100px] h-[100px] bg-blue-gray-500"></div>
 
         <div>
           <h3 className="text-sm font-medium line-clamp-2 ">{video.snippet.title}</h3>
