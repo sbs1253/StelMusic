@@ -1,6 +1,10 @@
+import { usePlaylist } from '@/hooks/usePlaylist';
+import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
 import { PlayArrowRounded, PlaylistAdd } from '@mui/icons-material';
 
-const PlaybackControl = ({ videos, selectedMusic, onPlayAll, onPlaySelected }) => {
+const PlaybackControl = ({ currentTag, selectedMusic }) => {
+  const { data: videos } = useYoutubeVideos({ sortBy: currentTag });
+  const { handlePlayAll, handlePlaySelected } = usePlaylist();
   const hasSelectedMusic = selectedMusic?.size > 0;
 
   return (
@@ -9,14 +13,14 @@ const PlaybackControl = ({ videos, selectedMusic, onPlayAll, onPlaySelected }) =
         {hasSelectedMusic ? (
           <>
             <button
-              onClick={onPlaySelected}
+              onClick={() => handlePlaySelected(selectedMusic)}
               className="flex-1 flex items-center justify-center gap-2 py-3 bg-brand-primary/90 text-white hover:bg-brand-primary  transition-colors"
             >
               <PlayArrowRounded />
               <span>선택곡 재생 ({selectedMusic.size}곡)</span>
             </button>
             <button
-              onClick={() => onPlayAll(videos)}
+              onClick={() => handlePlayAll(videos)}
               className="flex-1 flex items-center justify-center gap-2 py-3 bg-gray-100 hover:bg-gray-200 transition-colors"
             >
               <PlaylistAdd />
@@ -25,7 +29,7 @@ const PlaybackControl = ({ videos, selectedMusic, onPlayAll, onPlaySelected }) =
           </>
         ) : (
           <button
-            onClick={() => onPlayAll(videos)}
+            onClick={() => handlePlayAll(videos)}
             className="w-full flex items-center justify-center gap-2 py-3 bg-brand-primary/90 text-white hover:bg-brand-primary transition-colors"
           >
             <PlayArrowRounded />

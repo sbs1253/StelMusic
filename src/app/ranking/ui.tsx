@@ -1,27 +1,20 @@
 'use client';
-import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
+
 import { SortType, YoutubeVideo } from 'src/mocks/types_db';
 import { useRouter } from 'next/navigation';
-import VideoRankingCard from '@/app/ranking/components/videoRankingCard';
-import PageHeader from '@/app/ranking/components/pageHeader';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { Header } from '@/app/ranking/components/headerSection';
+import { VideoRankingSection } from '@/app/ranking/components/videoRankingSection';
 import PlaybackControl from '@/app/ranking/components/playControl';
-import { usePlaylist } from '@/hooks/usePlaylist';
 
 interface ContentProps {
-  initialVideos: YoutubeVideo[];
+  initialData: YoutubeVideo[];
   currentTag: SortType;
 }
 
-export default function Ui({ initialVideos, currentTag }: ContentProps) {
+export default function Ui({ initialData, currentTag = 'views' }: ContentProps) {
   const router = useRouter();
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(new Set());
-  const { data: videos, error } = useYoutubeVideos({ sortBy: currentTag, initialData: initialVideos });
-
-  const { handlePlayAll, handlePlaySelected } = usePlaylist({
-    videos: initialVideos,
-    selectedMusic,
-  });
 
   const handleTagSelect = (tag: SortType) => {
     router.push(`/ranking?q=${tag}`);
@@ -38,35 +31,21 @@ export default function Ui({ initialVideos, currentTag }: ContentProps) {
       return newSelected;
     });
   };
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen text-red-500">
-        오류가 발생했습니다. 잠시 후 다시 시도해주세요.
-      </div>
-    );
-  }
 
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">
-      <PageHeader title="인기 순위" selectedTag={currentTag} handleTagSelect={handleTagSelect} />
-      <div className="pb-[48px]">
-        {videos.map((video, index) => (
-          <VideoRankingCard
-            key={video.id}
-            video={video}
-            index={index}
-            selectedTag={currentTag || 'views'}
-            toggleMusic={toggleMusic}
-            selectedMusic={selectedMusic}
-          />
-        ))}
-      </div>
-      <PlaybackControl
-        videos={videos}
-        selectedMusic={selectedMusic}
-        onPlayAll={handlePlayAll}
-        onPlaySelected={handlePlaySelected}
-      />
+      <Suspense fallback={<div>loding</div>}>
+        <Header title="인기 순위" selectedTag={currentTag} handleTagSelect={handleTagSelect} />
+      </Suspense>
+      <Suspense fallback={<VideoRankingSection.Skeleton />}>
+        <VideoRankingSection
+          initialData={initialData}
+          currentTag={currentTag}
+          toggleMusic={toggleMusic}
+          selectedMusic={selectedMusic}
+        />
+      </Suspense>
+      <PlaybackControl currentTag={currentTag} selectedMusic={selectedMusic} />
     </div>
   );
 }
