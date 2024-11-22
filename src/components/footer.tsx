@@ -10,8 +10,6 @@ import PersonIcon from '@mui/icons-material/Person';
 
 export default function Footer() {
   const pathname = usePathname();
-  console.log('useParams(): ', useParams());
-  console.log(pathname);
   const navigation = [
     { name: '홈', href: '/', icon: HomeIcon },
     { name: '인기순위', href: '/ranking', icon: WhatshotIcon },
@@ -20,7 +18,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="fixed bottom-0 w-full max-w-lg bg-white">
+    <footer className="fixed bottom-0 w-full max-w-lg bg-white z-[9999]">
       <nav className="flex justify-around items-center h-16">
         {navigation.map((item) => {
           const Icon = item.icon;

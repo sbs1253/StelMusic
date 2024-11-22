@@ -2,7 +2,16 @@
 
 import { channels } from '@/mocks/channel';
 
+// 메모리 캐싱
+let cachedChannels: typeof channels | null = null;
+let lastFetchTime: number | null = null;
+const CACHE_DURATION = 24 * 60 * 60 * 1000;
+
 export async function fetchYoutubeChannels() {
+  if (cachedChannels && lastFetchTime && Date.now() - lastFetchTime < CACHE_DURATION) {
+    return cachedChannels;
+  }
+
   if (process.env.NODE_ENV === 'development') {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     return channels;
@@ -14,10 +23,17 @@ export async function fetchYoutubeChannels() {
   const apiUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelIds}&key=${apiKey}`;
 
   try {
-    const response = await fetch(apiUrl);
+    //  Route Segment 캐싱
+    const response = await fetch(apiUrl, {
+      next: { revalidate: CACHE_DURATION / 1000 },
+    });
     const data = await response.json();
     if (data.items) {
-      return transformChannelData(data.items);
+      const transformedData = transformChannelData(data.items);
+      // 캐시 업데이트
+      cachedChannels = transformedData as typeof channels;
+      lastFetchTime = Date.now();
+      return transformedData;
     }
   } catch (error) {
     console.error('Failed to fetch channel images:', error);

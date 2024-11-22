@@ -2,11 +2,11 @@
 
 import Image from 'next/image';
 
-export default function VideoDateCard({ video }) {
+export default function Card({ video }) {
   return (
     <div className="w-[250px] ">
       <Image
-        src={video.snippet.thumbnails.high.url1}
+        src={video.snippet.thumbnails.high.url}
         alt={video.snippet.title}
         width={300}
         height={300}

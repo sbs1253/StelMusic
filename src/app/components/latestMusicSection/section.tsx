@@ -5,9 +5,9 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import VideoDateCard from '@/components/VideoSliderCard';
+import Card from '@/app/components/latestMusicSection/card';
 
-export default function VideoSlider({ videos }) {
+export default function Section({ videos }) {
   return (
     <div className="relative">
       <Swiper
@@ -29,7 +29,7 @@ export default function VideoSlider({ videos }) {
       >
         {videos.map((video) => (
           <SwiperSlide key={video.id} style={{ width: 'auto' }}>
-            <VideoDateCard video={video} />
+            <Card video={video} />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -3,7 +3,7 @@
 import { channels } from '@/mocks/channel';
 import Image from 'next/image';
 
-export default function ChannelCard({ channelName, channelsData }) {
+export default function Card({ channelName, channelsData }) {
   return (
     <div className="flex flex-col justify-center items-center flex-shrink-0 max-w-[100px]">
       <Image
