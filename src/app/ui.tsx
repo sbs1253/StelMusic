@@ -19,12 +19,6 @@ export default function UI({ initialData, initialChannel }) {
 
       {/* 인기 순위 섹션 */}
       <section className="rounded-md">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">인기 순위</h1>
-          <Link href="/ranking" className="text-sm text-gray-600 hover:text-gray-900">
-            전체보기
-          </Link>
-        </div>
         <Suspense fallback={<TopRankingSection.Skeleton />}>
           <TopRankingSection initialData={initialData} />
         </Suspense>
@@ -33,7 +27,7 @@ export default function UI({ initialData, initialChannel }) {
       {/* 채널 섹션 */}
       <section>
         <h1 className="text-xl font-bold mb-4">채널</h1>
-        <Suspense fallback={<ChannelSection.Skeletion />}>
+        <Suspense fallback={<ChannelSection.Skeleton />}>
           <ChannelSection initialChannel={initialChannel} />
         </Suspense>
       </section>

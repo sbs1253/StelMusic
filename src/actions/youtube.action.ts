@@ -5,7 +5,7 @@ import { mockYoutubeData } from 'src/mocks/youtubeData';
 export async function fetchYoutubePlaylist(sortBy: SortType = 'views') {
   // 개발 환경에서는 mock 데이터 사용
   if (process.env.NODE_ENV === 'development') {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 2500));
     return sortVideos(mockYoutubeData, sortBy) as YoutubeVideo[];
   }
 

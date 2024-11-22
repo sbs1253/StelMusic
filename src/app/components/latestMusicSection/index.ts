@@ -1,5 +1,5 @@
-import Section from '@/app/components/latestMusicSection/latestMusicSlider';
-import Skeleton from '@/app/components/latestMusicSection/latestMusicSkeleton';
+import Section from '@/app/components/latestMusicSection/section';
+import Skeleton from '@/app/components/latestMusicSection/skeleton';
 
 export const LatestMusicSection = Object.assign(Section, {
   Skeleton,
