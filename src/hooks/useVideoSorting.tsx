@@ -5,6 +5,7 @@ import sortVideos from '@/utils/sortVideos';
 
 interface UseVideoSortingProps {
   initialData: YoutubeVideo[];
+  initialSort: SortType;
 }
 
 interface UseVideoSortingReturn {
@@ -14,16 +15,17 @@ interface UseVideoSortingReturn {
   isPending: boolean;
 }
 
-export function useVideoSorting({ initialData }: UseVideoSortingProps): UseVideoSortingReturn {
+export function useVideoSorting({ initialData, initialSort }: UseVideoSortingProps): UseVideoSortingReturn {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const currentSort = (searchParams.get('q') as SortType) || 'views';
-
+  // const currentSort = (searchParams.get('q') as SortType) || 'views';
+  const currentSort = initialSort;
   const videos = useMemo(() => sortVideos(initialData, currentSort), [initialData, currentSort]);
 
   const handleTagSelect = (newSort: SortType) => {
+    if (currentSort === newSort) return;
     startTransition(() => {
       router.push(`/ranking?q=${newSort}`);
     });

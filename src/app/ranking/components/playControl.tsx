@@ -2,8 +2,7 @@ import { usePlaylist } from '@/hooks/usePlaylist';
 import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
 import { PlayArrowRounded, PlaylistAdd } from '@mui/icons-material';
 
-const PlaybackControl = ({ currentTag, selectedMusic }) => {
-  const { data: videos } = useYoutubeVideos({ sortBy: currentTag });
+const PlaybackControl = ({ videos, selectedMusic }) => {
   const { handlePlayAll, handlePlaySelected } = usePlaylist();
   const hasSelectedMusic = selectedMusic?.size > 0;
 

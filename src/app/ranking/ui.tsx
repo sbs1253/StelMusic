@@ -2,7 +2,7 @@
 
 import { SortType, YoutubeVideo } from 'src/mocks/types_db';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from '@/app/ranking/components/headerSection';
 import { VideoRankingSection } from '@/app/ranking/components/videoRankingSection';
 import PlaybackControl from '@/app/ranking/components/playControl';
@@ -10,12 +10,20 @@ import { useVideoSorting } from '@/hooks/useVideoSorting';
 
 interface ContentProps {
   initialData: YoutubeVideo[];
+  initialSort: SortType;
 }
 
-export default function Ui({ initialData }: ContentProps) {
-  const [selectedMusic, setSelectedMusic] = useState<Set<string>>(new Set());
-  const { videos, currentSort, handleTagSelect, isPending } = useVideoSorting({ initialData });
+export default function Ui({ initialData, initialSort }: ContentProps) {
+  const [selectedMusic, setSelectedMusic] = useState<Set<string>>(() => new Set());
+  // const [isClient, setIsClient] = useState(false);
+
+  // useEffect(() => {
+  //   setIsClient(true);
+  // }, []);
+
+  const { videos, currentSort, handleTagSelect, isPending } = useVideoSorting({ initialData, initialSort });
   console.log(isPending);
+
   const toggleMusic = (musicId) => {
     setSelectedMusic((prev) => {
       const newSelected = new Set(prev);
@@ -27,6 +35,10 @@ export default function Ui({ initialData }: ContentProps) {
       return newSelected;
     });
   };
+
+  // if (!isClient) {
+  //   return <VideoRankingSection.Skeleton />;
+  // }
 
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">
@@ -41,8 +53,8 @@ export default function Ui({ initialData }: ContentProps) {
           selectedMusic={selectedMusic}
         />
       )}
-
-      <PlaybackControl currentTag={currentSort} selectedMusic={selectedMusic} />
+      {selectedMusic ? <PlaybackControl videos={videos} selectedMusic={selectedMusic} /> : null}
+      {/* <PlaybackControl videos={videos} selectedMusic={selectedMusic} /> */}
     </div>
   );
 }
