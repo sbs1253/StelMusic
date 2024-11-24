@@ -17,7 +17,6 @@ export function useYoutubeVideos({ sortBy, initialData, limit }: YoutubeVideosPr
     initialData,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-    // select: (data) => (limit ? data.slice(0, limit) : data),
     select: (data) => {
       const sortedData = sortVideos(data, sortBy);
       return limit ? sortedData.slice(0, limit) : sortedData;

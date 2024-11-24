@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Card({ video, index, selectedTag, toggleMusic, selectedMusic }) {
-  const tag = {
+export default function Card({ video, index, currentSort, toggleMusic, selectedMusic }) {
+  const sort = {
     views: <span>{video.viewCount}회</span>,
     likes: <span>{video.likeCount}회</span>,
     date: <span>{video.snippet.publishedAt}</span>,
@@ -40,7 +40,7 @@ export default function Card({ video, index, selectedTag, toggleMusic, selectedM
         }`}
       >
         {/* <span className="text-xs text-gray-500">구독</span> */}
-        {tag[selectedTag]}
+        {sort[currentSort]}
       </div>
     </div>
   );

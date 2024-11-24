@@ -2,24 +2,20 @@
 
 import { SortType, YoutubeVideo } from 'src/mocks/types_db';
 import { useRouter } from 'next/navigation';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { Header } from '@/app/ranking/components/headerSection';
 import { VideoRankingSection } from '@/app/ranking/components/videoRankingSection';
 import PlaybackControl from '@/app/ranking/components/playControl';
+import { useVideoSorting } from '@/hooks/useVideoSorting';
 
 interface ContentProps {
   initialData: YoutubeVideo[];
-  currentTag: SortType;
 }
 
-export default function Ui({ initialData, currentTag = 'views' }: ContentProps) {
-  const router = useRouter();
+export default function Ui({ initialData }: ContentProps) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(new Set());
-
-  const handleTagSelect = (tag: SortType) => {
-    router.push(`/ranking?q=${tag}`);
-  };
-
+  const { videos, currentSort, handleTagSelect, isPending } = useVideoSorting({ initialData });
+  console.log(isPending);
   const toggleMusic = (musicId) => {
     setSelectedMusic((prev) => {
       const newSelected = new Set(prev);
@@ -34,18 +30,19 @@ export default function Ui({ initialData, currentTag = 'views' }: ContentProps) 
 
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">
-      <Suspense fallback={<div>loding</div>}>
-        <Header title="인기 순위" selectedTag={currentTag} handleTagSelect={handleTagSelect} />
-      </Suspense>
-      <Suspense fallback={<VideoRankingSection.Skeleton />}>
+      <Header title="인기 순위" selectedTag={currentSort} handleTagSelect={handleTagSelect} />
+      {isPending ? (
+        <VideoRankingSection.Skeleton />
+      ) : (
         <VideoRankingSection
-          initialData={initialData}
-          currentTag={currentTag}
+          videos={videos}
+          currentSort={currentSort}
           toggleMusic={toggleMusic}
           selectedMusic={selectedMusic}
         />
-      </Suspense>
-      <PlaybackControl currentTag={currentTag} selectedMusic={selectedMusic} />
+      )}
+
+      <PlaybackControl currentTag={currentSort} selectedMusic={selectedMusic} />
     </div>
   );
 }

@@ -1,24 +1,16 @@
 'use client';
 
 import Card from '@/app/ranking/components/videoRankingSection/card';
-import { useYoutubeVideos } from '@/hooks/useYoutubeVideos';
-import { useEffect } from 'react';
 
-export default function Section({ currentTag, toggleMusic, selectedMusic, initialData }) {
-  const { data: videos } = useYoutubeVideos({
-    sortBy: currentTag,
-    initialData,
-  });
-  useEffect(() => {}, [currentTag]);
-
+export default function Section({ currentSort, toggleMusic, selectedMusic, videos }) {
   return (
-    <div className="pb-12 space-y-4">
+    <div className="pb-12 space-y-4 transition-opacity duration-200 ease-in-out">
       {videos.map((video, index) => (
         <Card
           key={video.id}
           video={video}
           index={index}
-          selectedTag={currentTag}
+          currentSort={currentSort}
           toggleMusic={toggleMusic}
           selectedMusic={selectedMusic}
         />
@@ -30,7 +22,7 @@ export default function Section({ currentTag, toggleMusic, selectedMusic, initia
 Section.Skeleton = function Skeleton() {
   return (
     <div className="space-y-2">
-      {Array.from({ length: 5 }).map((_, index) => (
+      {Array.from({ length: 10 }).map((_, index) => (
         <div key={index} className="flex items-center gap-4 p-4 animate-pulse">
           <div className="w-4 h-4 bg-gray-200 rounded" />
           <div className="w-12 h-10 bg-gray-200 rounded" />
