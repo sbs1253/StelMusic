@@ -4,10 +4,10 @@ import Card from '@/app/ranking/components/videoRankingSection/card';
 
 export default function Section({ currentSort, toggleMusic, selectedMusic, videos }) {
   return (
-    <div className="pb-12 space-y-4 transition-opacity duration-200 ease-in-out">
+    <div className="pb-12 space-y-4 ">
       {videos.map((video, index) => (
         <Card
-          key={video.id}
+          key={video.video_id}
           video={video}
           index={index}
           currentSort={currentSort}

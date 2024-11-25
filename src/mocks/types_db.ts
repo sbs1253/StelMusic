@@ -24,6 +24,7 @@ export interface YoutubeVideo {
     videoOwnerChannelTitle: string;
     videoOwnerChannelId: string;
   };
+  playlistType: string;
 }
 
 type Thumbnail = {

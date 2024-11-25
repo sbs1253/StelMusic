@@ -8,21 +8,9 @@ import { VideoRankingSection } from '@/app/ranking/components/videoRankingSectio
 import PlaybackControl from '@/app/ranking/components/playControl';
 import { useVideoSorting } from '@/hooks/useVideoSorting';
 
-interface ContentProps {
-  initialData: YoutubeVideo[];
-  initialSort: SortType;
-}
-
-export default function Ui({ initialData, initialSort }: ContentProps) {
+export default function Ui({ initialData, initialSort, video, totalCount, hasMore }) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(() => new Set());
-  // const [isClient, setIsClient] = useState(false);
-
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, []);
-
-  const { videos, currentSort, handleTagSelect, isPending } = useVideoSorting({ initialData, initialSort });
-  console.log(isPending);
+  const { currentSort, handleTagSelect } = useVideoSorting({ initialData, initialSort });
 
   const toggleMusic = (musicId) => {
     setSelectedMusic((prev) => {
@@ -36,25 +24,16 @@ export default function Ui({ initialData, initialSort }: ContentProps) {
     });
   };
 
-  // if (!isClient) {
-  //   return <VideoRankingSection.Skeleton />;
-  // }
-
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">
       <Header title="인기 순위" selectedTag={currentSort} handleTagSelect={handleTagSelect} />
-      {isPending ? (
-        <VideoRankingSection.Skeleton />
-      ) : (
-        <VideoRankingSection
-          videos={videos}
-          currentSort={currentSort}
-          toggleMusic={toggleMusic}
-          selectedMusic={selectedMusic}
-        />
-      )}
-      {selectedMusic ? <PlaybackControl videos={videos} selectedMusic={selectedMusic} /> : null}
-      {/* <PlaybackControl videos={videos} selectedMusic={selectedMusic} /> */}
+      {/* <VideoRankingSection
+        videos={video}
+        currentSort={currentSort}
+        toggleMusic={toggleMusic}
+        selectedMusic={selectedMusic}
+      /> */}
+      {/* <PlaybackControl videos={video} selectedMusic={selectedMusic} /> */}
     </div>
   );
 }

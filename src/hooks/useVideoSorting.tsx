@@ -1,5 +1,5 @@
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useMemo, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useMemo, useState } from 'react';
 import { SortType, YoutubeVideo } from '@/mocks/types_db';
 import sortVideos from '@/utils/sortVideos';
 
@@ -9,31 +9,29 @@ interface UseVideoSortingProps {
 }
 
 interface UseVideoSortingReturn {
-  videos: YoutubeVideo[];
+  // videos: YoutubeVideo[];
   currentSort: SortType;
   handleTagSelect: (newSort: SortType) => void;
-  isPending: boolean;
 }
 
 export function useVideoSorting({ initialData, initialSort }: UseVideoSortingProps): UseVideoSortingReturn {
   const router = useRouter();
-  // const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [currentSort, setCurrentSort] = useState<SortType>(initialSort);
+  // const videos = useMemo(() => sortVideos(initialData, currentSort), [initialData, currentSort]);
 
-  // const currentSort = (searchParams.get('q') as SortType) || 'views';
-  const currentSort = initialSort;
-  const videos = useMemo(() => sortVideos(initialData, currentSort), [initialData, currentSort]);
-
-  const handleTagSelect = (newSort: SortType) => {
-    if (currentSort === newSort) return;
-    startTransition(() => {
-      router.push(`/ranking?q=${newSort}`);
-    });
-  };
+  const handleTagSelect = useCallback(
+    (newSort: SortType) => {
+      if (currentSort === newSort) return;
+      setCurrentSort(newSort);
+      router.push(`/ranking?q=${newSort}`, {
+        scroll: false,
+      });
+    },
+    [currentSort, router]
+  );
   return {
-    videos,
+    // videos,
     currentSort,
     handleTagSelect,
-    isPending,
   };
 }
