@@ -3,27 +3,15 @@
 import { SortType, YoutubeVideo } from '@/mocks/types_db';
 import { createServerSupabaseClient } from '@/utils/supabase/server';
 
-interface VideoData {
-  video_id: string;
-  title: string;
-  description: string;
-  channel_id: string;
-  channel_title: string;
-  published_at: string;
-  view_count: number;
-  like_count: number;
-  thumbnail_url: string;
-  playlist_id: string;
-  position: number;
-}
 type PlaylistType = 'original' | 'cover';
+type RankType = 'total' | 'daily';
 interface PlaylistConfig {
   id: string;
   type: PlaylistType;
 }
 const PLAYLISTS: PlaylistConfig[] = [
-  { id: 'PLLjd981H8qSN9PQ8-X6wINqBF1GjGxusy', type: 'original' },
-  { id: 'PLLjd981H8qSMGC4Nir0hD2Gj9n9PDUoHX', type: 'cover' },
+  { id: 'PLLjd981H8qSN9PQ8-X6wINqBF1GjGxusy', type: 'cover' },
+  { id: 'PLLjd981H8qSMGC4Nir0hD2Gj9n9PDUoHX', type: 'original' },
 ];
 
 async function fetchPlaylistVideos(playlistId: string, playlistType: PlaylistType) {
@@ -90,8 +78,9 @@ export async function fetchYoutubeVideos() {
       PLAYLISTS.map((playlist) => fetchPlaylistVideos(playlist.id, playlist.type))
     );
     const allVideos = playlistResults.flat();
-    console.log(allVideos.length);
-    const result = await saveVideoToSupabase(allVideos);
+
+    await Promise.all([saveVideoToSupabase(allVideos), saveDailyStats(allVideos)]);
+
     return {
       success: true,
       data: allVideos,
@@ -139,39 +128,83 @@ export async function getVideos(
   options: {
     playlistType?: 'original' | 'cover' | 'all';
     sortBy?: 'views' | 'likes' | 'date';
+    rankType?: RankType;
     limit?: number;
     offset?: number;
   } = {}
 ) {
-  const { playlistType = 'all', sortBy = 'views', limit = 50, offset = 0 } = options;
+  const { playlistType = 'all', sortBy = 'views', rankType = 'total', limit = 50, offset = 0 } = options;
 
   const supabase = await createServerSupabaseClient();
 
-  let query = supabase.from('youtube_videos').select('*', { count: 'exact' });
+  try {
+    if (rankType === 'daily') {
+      // 일간 순위 조회
+      const { data, error } = await supabase.rpc('get_daily_rankings', {
+        p_playlist_type: playlistType === 'all' ? null : playlistType,
+      });
+      console.log(data);
+      if (error) throw error;
 
-  if (playlistType !== 'all') {
-    query = query.eq('playlist_type', playlistType);
+      // 페이지네이션 적용
+      const paginatedData = data.slice(offset, offset + limit);
+
+      return {
+        videos: paginatedData,
+        totalCount: data.length,
+        hasMore: offset + limit < data.length,
+      };
+    } else {
+      // 전체 순위 조회
+      let query = supabase.from('youtube_videos').select('*', { count: 'exact' });
+
+      if (playlistType !== 'all') {
+        query = query.eq('playlist_type', playlistType);
+      }
+
+      const orderMap = {
+        views: 'view_count',
+        likes: 'like_count',
+        date: 'published_at',
+      };
+
+      query = query.order(orderMap[sortBy], { ascending: false });
+      const { data, error, count } = await query.range(offset, offset + limit - 1);
+
+      if (error) throw error;
+
+      return {
+        videos: data,
+        totalCount: count,
+        hasMore: count ? offset + limit < count : false,
+      };
+    }
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    throw error;
+  }
+}
+
+async function saveDailyStats(videos: YoutubeVideo[]) {
+  const supabase = await createServerSupabaseClient();
+
+  const dailyStats = videos.map((video) => ({
+    video_id: video.id,
+    view_count: video.viewCount,
+    like_count: video.likeCount,
+    // date는 default current_date 사용됨
+  }));
+
+  const { error } = await supabase.from('daily_video_stats').upsert(dailyStats, {
+    onConflict: 'video_id,date',
+  });
+
+  if (error) {
+    console.error('Error saving daily stats:', error);
+    throw error;
   }
 
-  // 정렬
-  const orderMap = {
-    views: 'view_count',
-    likes: 'like_count',
-    date: 'published_at',
-  };
-
-  query = query.order(orderMap[sortBy], { ascending: false });
-
-  // 페이지네이션
-  const { data, error, count } = await query.range(offset, offset + limit - 1);
-
-  if (error) throw error;
-
-  return {
-    videos: data,
-    totalCount: count,
-    hasMore: count ? offset + limit < count : false,
-  };
+  return { success: true, count: dailyStats.length };
 }
 
 export async function loadMoreVideos({

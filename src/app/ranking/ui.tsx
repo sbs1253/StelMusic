@@ -8,9 +8,9 @@ import { VideoRankingSection } from '@/app/ranking/components/videoRankingSectio
 import PlaybackControl from '@/app/ranking/components/playControl';
 import { useVideoSorting } from '@/hooks/useVideoSorting';
 
-export default function Ui({ initialData, initialSort, video, totalCount, hasMore }) {
+export default function Ui({ initialVideos, initialSort, totalCount, hasMore }) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(() => new Set());
-  const { currentSort, handleTagSelect } = useVideoSorting({ initialData, initialSort });
+  const { currentSort, handleTagSelect } = useVideoSorting({ initialVideos, initialSort });
 
   const toggleMusic = (musicId) => {
     setSelectedMusic((prev) => {
@@ -27,12 +27,12 @@ export default function Ui({ initialData, initialSort, video, totalCount, hasMor
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">
       <Header title="인기 순위" selectedTag={currentSort} handleTagSelect={handleTagSelect} />
-      {/* <VideoRankingSection
-        videos={video}
+      <VideoRankingSection
+        videos={initialVideos}
         currentSort={currentSort}
         toggleMusic={toggleMusic}
         selectedMusic={selectedMusic}
-      /> */}
+      />
       {/* <PlaybackControl videos={video} selectedMusic={selectedMusic} /> */}
     </div>
   );

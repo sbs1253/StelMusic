@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 export default function Card({ video, index, currentSort, toggleMusic, selectedMusic }) {
   const sort = {
-    views: <span>{video.viewCount}회</span>,
-    likes: <span>{video.likeCount}회</span>,
-    date: <span>{video.snippet.publishedAt}</span>,
+    views: <span>{video.view_count}회</span>,
+    likes: <span>{video.like_count}회</span>,
+    date: <span>{video.published_at.split('T')[0]}</span>,
   };
   return (
     <div
@@ -28,15 +28,15 @@ export default function Card({ video, index, currentSort, toggleMusic, selectedM
       <div className="w-12 h-10 bg-blue-gray-300"></div>
       <div>
         <Link href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" className="text-sm line-clamp-1">
-          {video.snippet.title}
+          {video.title}
         </Link>
         <p className={`text-xs ${selectedMusic.has(video.id) ? 'text-black' : 'text-gray-500'}`}>
-          {video.snippet.videoOwnerChannelTitle}
+          {video.video_owner_channel_title}
         </p>
       </div>
       <div
         className={`absolute bottom-1 right-1 flex gap-1 text-xs ${
-          selectedMusic.has(video.id) ? 'text-black' : 'text-gray-500'
+          selectedMusic.has(video.video_id) ? 'text-black' : 'text-gray-500'
         }`}
       >
         {/* <span className="text-xs text-gray-500">구독</span> */}

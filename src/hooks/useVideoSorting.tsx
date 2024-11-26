@@ -4,7 +4,7 @@ import { SortType, YoutubeVideo } from '@/mocks/types_db';
 import sortVideos from '@/utils/sortVideos';
 
 interface UseVideoSortingProps {
-  initialData: YoutubeVideo[];
+  initialVideos: YoutubeVideo[];
   initialSort: SortType;
 }
 
@@ -14,7 +14,7 @@ interface UseVideoSortingReturn {
   handleTagSelect: (newSort: SortType) => void;
 }
 
-export function useVideoSorting({ initialData, initialSort }: UseVideoSortingProps): UseVideoSortingReturn {
+export function useVideoSorting({ initialVideos, initialSort }: UseVideoSortingProps): UseVideoSortingReturn {
   const router = useRouter();
   const [currentSort, setCurrentSort] = useState<SortType>(initialSort);
   // const videos = useMemo(() => sortVideos(initialData, currentSort), [initialData, currentSort]);
