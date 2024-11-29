@@ -122,8 +122,6 @@ async function saveVideoToSupabase(videos: YoutubeVideo[]) {
     console.error('Error saving videos:', error);
     throw error;
   }
-  console.log(koreanTime);
-  // console.log(mappedVideos);
   return { success: true, count: mappedVideos.length };
 }
 
@@ -140,6 +138,7 @@ async function saveDailyStats(videos: YoutubeVideo[]) {
     view_count: video.viewCount,
     like_count: video.likeCount,
     date: iskoreanTime, // 명시적으로 날짜 지정
+    created_at: koreanTime,
   }));
 
   // 개발 환경에서는 upsert, 프로덕션에서는 기존 데이터가 없을 때만 삽입
@@ -198,6 +197,8 @@ export async function getVideos(
       const { data, error } = await supabase.rpc('get_daily_rankings', {
         p_playlist_type: playlistType === 'all' ? null : playlistType,
       });
+      console.log(data);
+      console.log('playlistType', playlistType);
       if (error) throw error;
       // 페이지네이션 적용
       const paginatedData = data.slice(offset, offset + limit);

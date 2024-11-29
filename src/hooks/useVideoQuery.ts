@@ -2,7 +2,7 @@ import { getVideos } from '@/actions/fetchYoutubePlaylist.action';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export function useVideoQuery({ sort, rankType, playlistType, initialData }) {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: ['videos', { sort, rankType, playlistType }],
     queryFn: () =>
       getVideos({

@@ -1,3 +1,4 @@
+import { formatDate, formatLikeCount, formatViewCount } from '@/utils/formatters';
 import Image from 'next/image';
 import Link from 'next/link';
 function getCountsByFilter(video, type) {
@@ -10,11 +11,10 @@ function getCountsByFilter(video, type) {
 
 export default function Card({ video, index, filters, toggleMusic, selectedMusic }) {
   const { viewCount, likeCount, publishedAt } = getCountsByFilter(video, filters.rankType);
-
   const sort = {
-    views: <span>{viewCount}회</span>,
-    likes: <span>{likeCount}회</span>,
-    date: <span>{publishedAt}</span>,
+    views: <span>{formatViewCount(viewCount)}</span>,
+    likes: <span>{formatLikeCount(likeCount)}</span>,
+    date: <span>{formatDate(publishedAt)}</span>,
   };
 
   return (
