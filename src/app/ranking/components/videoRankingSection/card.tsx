@@ -1,12 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
-
-export default function Card({ video, index, currentSort, toggleMusic, selectedMusic }) {
-  const sort = {
-    views: <span>{video.view_count}회</span>,
-    likes: <span>{video.like_count}회</span>,
-    date: <span>{video.published_at.split('T')[0]}</span>,
+function getCountsByFilter(video, type) {
+  return {
+    viewCount: type === 'daily' ? video.view_increase : video.view_count,
+    likeCount: type === 'daily' ? video.like_increase : video.like_count,
+    publishedAt: video.published_at.split('T')[0],
   };
+}
+
+export default function Card({ video, index, filters, toggleMusic, selectedMusic }) {
+  const { viewCount, likeCount, publishedAt } = getCountsByFilter(video, filters.rankType);
+
+  const sort = {
+    views: <span>{viewCount}회</span>,
+    likes: <span>{likeCount}회</span>,
+    date: <span>{publishedAt}</span>,
+  };
+
   return (
     <div
       className={`relative flex items-center gap-2 p-4 w-full h-14 ${
@@ -40,7 +50,7 @@ export default function Card({ video, index, currentSort, toggleMusic, selectedM
         }`}
       >
         {/* <span className="text-xs text-gray-500">구독</span> */}
-        {sort[currentSort]}
+        {sort[filters.sort]}
       </div>
     </div>
   );

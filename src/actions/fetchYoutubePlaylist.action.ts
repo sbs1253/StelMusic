@@ -1,6 +1,6 @@
 'use server';
 
-import { SortType, YoutubeVideo } from '@/mocks/types_db';
+import { YoutubeVideo } from '@/mocks/types_db';
 import { createServerSupabaseClient } from '@/utils/supabase/server';
 
 type PlaylistType = 'original' | 'cover';
@@ -78,9 +78,7 @@ export async function fetchYoutubeVideos() {
       PLAYLISTS.map((playlist) => fetchPlaylistVideos(playlist.id, playlist.type))
     );
     const allVideos = playlistResults.flat();
-
     await Promise.all([saveVideoToSupabase(allVideos), saveDailyStats(allVideos)]);
-
     return {
       success: true,
       data: allVideos,
@@ -91,18 +89,21 @@ export async function fetchYoutubeVideos() {
     throw error;
   }
 }
-
+const getKoreanTime = (): Date => {
+  const offset = 1000 * 60 * 60 * 9; // UTC+9
+  return new Date(Date.now() + offset);
+};
 async function saveVideoToSupabase(videos: YoutubeVideo[]) {
   const supabase = await createServerSupabaseClient();
-
-  // YouTube 데이터를 Supabase 테이블 구조에 맞게 변환
+  const koreanTime = getKoreanTime();
+  console.log(koreanTime);
   const mappedVideos = videos.map((video) => ({
     video_id: video.id,
     title: video.snippet.title,
     description: video.snippet.description,
     channel_id: video.snippet.channelId,
     channel_title: video.snippet.channelTitle,
-    published_at: video.snippet.publishedAt,
+    published_at: new Date(video.snippet.publishedAt).toLocaleString('en-US', { timeZone: 'Asia/Seoul' }),
     view_count: video.viewCount,
     like_count: video.likeCount,
     thumbnail_url: video.snippet.thumbnails.high.url,
@@ -110,9 +111,10 @@ async function saveVideoToSupabase(videos: YoutubeVideo[]) {
     playlist_id: video.snippet.playlistId,
     playlist_type: video.playlistType,
     position: video.snippet.position,
+    created_at: koreanTime,
+    updated_at: koreanTime,
   }));
-
-  const { data, error } = await supabase.from('youtube_videos').upsert(mappedVideos, {
+  const { error } = await supabase.from('youtube_videos').upsert(mappedVideos, {
     onConflict: 'video_id',
   });
 
@@ -120,8 +122,61 @@ async function saveVideoToSupabase(videos: YoutubeVideo[]) {
     console.error('Error saving videos:', error);
     throw error;
   }
-
+  console.log(koreanTime);
+  // console.log(mappedVideos);
   return { success: true, count: mappedVideos.length };
+}
+
+async function saveDailyStats(videos: YoutubeVideo[]) {
+  const supabase = await createServerSupabaseClient();
+
+  const koreanTime = getKoreanTime();
+  const iskoreanTime = new Date(koreanTime).toISOString().split('T')[0];
+
+  const { data: existingData } = await supabase.from('daily_video_stats').select('video_id').eq('date', iskoreanTime);
+
+  const dailyStats = videos.map((video) => ({
+    video_id: video.id,
+    view_count: video.viewCount,
+    like_count: video.likeCount,
+    date: iskoreanTime, // 명시적으로 날짜 지정
+  }));
+
+  // 개발 환경에서는 upsert, 프로덕션에서는 기존 데이터가 없을 때만 삽입
+  if (process.env.NODE_ENV === 'development') {
+    const { error } = await supabase.from('daily_video_stats').upsert(dailyStats, {
+      onConflict: 'video_id,date',
+      ignoreDuplicates: true, // 중복 무시 옵션 추가
+    });
+
+    if (error) {
+      console.warn('Development: Duplicate entry ignored:', error.message);
+      return { success: true, count: 0, message: 'Duplicate entries ignored' };
+    }
+  } else {
+    // 프로덕션 환경에서는 해당 날짜에 데이터가 없을 때만 삽입
+    // 00시 00분에만 데이터 삽입하고 1시간 마다 업데이트될때는 방지하기위함
+    if (!existingData?.length) {
+      const { error } = await supabase.from('daily_video_stats').insert(dailyStats);
+
+      if (error) {
+        console.error('Error saving daily stats:', error);
+        throw error;
+      }
+    } else {
+      return {
+        success: true,
+        count: 0,
+        message: 'Daily stats already exist for today',
+      };
+    }
+  }
+
+  return {
+    success: true,
+    count: dailyStats.length,
+    message: 'Daily stats saved successfully',
+  };
 }
 
 export async function getVideos(
@@ -143,9 +198,7 @@ export async function getVideos(
       const { data, error } = await supabase.rpc('get_daily_rankings', {
         p_playlist_type: playlistType === 'all' ? null : playlistType,
       });
-      console.log(data);
       if (error) throw error;
-
       // 페이지네이션 적용
       const paginatedData = data.slice(offset, offset + limit);
 
@@ -161,7 +214,6 @@ export async function getVideos(
       if (playlistType !== 'all') {
         query = query.eq('playlist_type', playlistType);
       }
-
       const orderMap = {
         views: 'view_count',
         likes: 'like_count',
@@ -185,37 +237,7 @@ export async function getVideos(
   }
 }
 
-async function saveDailyStats(videos: YoutubeVideo[]) {
-  const supabase = await createServerSupabaseClient();
-
-  const dailyStats = videos.map((video) => ({
-    video_id: video.id,
-    view_count: video.viewCount,
-    like_count: video.likeCount,
-    // date는 default current_date 사용됨
-  }));
-
-  const { error } = await supabase.from('daily_video_stats').upsert(dailyStats, {
-    onConflict: 'video_id,date',
-  });
-
-  if (error) {
-    console.error('Error saving daily stats:', error);
-    throw error;
-  }
-
-  return { success: true, count: dailyStats.length };
-}
-
-export async function loadMoreVideos({
-  sortBy = 'views',
-  page,
-  limit = 30,
-}: {
-  sortBy: SortType;
-  page: number;
-  limit?: number;
-}) {
+export async function loadMoreVideos({ sortBy = 'views', page, limit = 30 }: { sortBy; page: number; limit?: number }) {
   const offset = (page - 1) * limit;
 
   const { videos, totalCount, hasMore } = await getVideos({
