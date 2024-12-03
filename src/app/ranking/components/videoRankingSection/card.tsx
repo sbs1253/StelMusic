@@ -1,10 +1,27 @@
 import { formatDate, formatLikeCount, formatViewCount } from '@/utils/formatters';
 import Image from 'next/image';
 import Link from 'next/link';
-function getCountsByFilter(video, type) {
+
+const countMapping = {
+  daily: (video) => ({
+    viewCount: video.view_increase,
+    likeCount: video.like_increase,
+  }),
+  weekly: (video) => ({
+    viewCount: video.weekly_view_increase,
+    likeCount: video.weekly_like_increase,
+  }),
+  total: (video) => ({
+    viewCount: video.view_count,
+    likeCount: video.like_count,
+  }),
+};
+function getCountsByFilter(video, type = 'total') {
+  console.log(type);
+  const { viewCount, likeCount } = countMapping[type](video);
   return {
-    viewCount: type === 'daily' ? video.view_increase : video.view_count,
-    likeCount: type === 'daily' ? video.like_increase : video.like_count,
+    viewCount,
+    likeCount,
     publishedAt: video.published_at.split('T')[0],
   };
 }

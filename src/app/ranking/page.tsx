@@ -10,6 +10,7 @@ export default async function page({ searchParams }) {
     playlistType: (searchParams.playlistType as VideoFilters['playlistType']) || FILTER_OPTIONS.PLAYLIST_TYPE.ALL,
   };
   await fetchYoutubeVideos();
+
   const initialData = await getVideos({
     sortBy: initialFilters.sort,
     rankType: initialFilters.rankType,

@@ -3,8 +3,9 @@
 import { YoutubeVideo } from '@/mocks/types_db';
 import { createServerSupabaseClient } from '@/utils/supabase/server';
 
-type PlaylistType = 'original' | 'cover';
-type RankType = 'total' | 'daily';
+type PlaylistType = 'all' | 'original' | 'cover';
+type RankType = 'total' | 'daily' | 'weekly';
+type SortBy = 'views' | 'likes' | 'date';
 interface PlaylistConfig {
   id: string;
   type: PlaylistType;
@@ -96,7 +97,7 @@ const getKoreanTime = (): Date => {
 async function saveVideoToSupabase(videos: YoutubeVideo[]) {
   const supabase = await createServerSupabaseClient();
   const koreanTime = getKoreanTime();
-  console.log(koreanTime);
+
   const mappedVideos = videos.map((video) => ({
     video_id: video.id,
     title: video.snippet.title,
@@ -145,7 +146,6 @@ async function saveDailyStats(videos: YoutubeVideo[]) {
   if (process.env.NODE_ENV === 'development') {
     const { error } = await supabase.from('daily_video_stats').upsert(dailyStats, {
       onConflict: 'video_id,date',
-      ignoreDuplicates: true, // 중복 무시 옵션 추가
     });
 
     if (error) {
@@ -178,28 +178,37 @@ async function saveDailyStats(videos: YoutubeVideo[]) {
   };
 }
 
-export async function getVideos(
-  options: {
-    playlistType?: 'original' | 'cover' | 'all';
-    sortBy?: 'views' | 'likes' | 'date';
-    rankType?: RankType;
-    limit?: number;
-    offset?: number;
-  } = {}
-) {
-  const { playlistType = 'all', sortBy = 'views', rankType = 'total', limit = 50, offset = 0 } = options;
-
+interface VideoOptions {
+  playlistType?: PlaylistType;
+  sortBy?: SortBy;
+  rankType?: RankType;
+  limit?: number;
+  offset?: number;
+}
+export async function getVideos({
+  playlistType = 'all',
+  sortBy = 'views',
+  rankType = 'total',
+  limit = 50,
+  offset = 0,
+}: VideoOptions = {}) {
+  console.log(playlistType, sortBy, rankType);
   const supabase = await createServerSupabaseClient();
-
+  const koreanTime = getKoreanTime();
+  const utcDate = new Date(koreanTime).toISOString().split('T')[0];
+  console.log(koreanTime);
+  console.log(utcDate);
   try {
-    if (rankType === 'daily') {
-      // 일간 순위 조회
-      const { data, error } = await supabase.rpc('get_daily_rankings', {
+    // 랭킹 조회 (일간/주간)
+    if (['daily', 'weekly'].includes(rankType)) {
+      const functionName = rankType === 'daily' ? 'get_daily_rankings' : 'get_weekly_rankings';
+
+      const { data, error } = await supabase.rpc(functionName, {
         p_playlist_type: playlistType === 'all' ? null : playlistType,
       });
-      console.log(data);
-      console.log('playlistType', playlistType);
+      console.log(data, rankType);
       if (error) throw error;
+
       // 페이지네이션 적용
       const paginatedData = data.slice(offset, offset + limit);
 
@@ -208,30 +217,32 @@ export async function getVideos(
         totalCount: data.length,
         hasMore: offset + limit < data.length,
       };
-    } else {
-      // 전체 순위 조회
-      let query = supabase.from('youtube_videos').select('*', { count: 'exact' });
-
-      if (playlistType !== 'all') {
-        query = query.eq('playlist_type', playlistType);
-      }
-      const orderMap = {
-        views: 'view_count',
-        likes: 'like_count',
-        date: 'published_at',
-      };
-
-      query = query.order(orderMap[sortBy], { ascending: false });
-      const { data, error, count } = await query.range(offset, offset + limit - 1);
-
-      if (error) throw error;
-
-      return {
-        videos: data,
-        totalCount: count,
-        hasMore: count ? offset + limit < count : false,
-      };
     }
+
+    // 전체 순위 조회 (기존 로직)
+    let query = supabase.from('youtube_videos').select('*', { count: 'exact' });
+
+    if (playlistType !== 'all') {
+      query = query.eq('playlist_type', playlistType);
+    }
+
+    const orderMap = {
+      views: 'view_count',
+      likes: 'like_count',
+      date: 'published_at',
+    };
+
+    query = query.order(orderMap[sortBy], { ascending: false });
+
+    const { data, error, count } = await query.range(offset, offset + limit - 1);
+
+    if (error) throw error;
+
+    return {
+      videos: data,
+      totalCount: count,
+      hasMore: count ? offset + limit < count : false,
+    };
   } catch (error) {
     console.error('Error fetching videos:', error);
     throw error;

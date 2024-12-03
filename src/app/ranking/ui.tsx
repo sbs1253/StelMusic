@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Header } from '@/app/ranking/components/headerSection';
 import { VideoRankingSection } from '@/app/ranking/components/videoRankingSection';
 import { useVideoFilters } from '@/hooks/useVideoFilters';
@@ -9,7 +9,7 @@ export default function Ui({ initialData, initialFilters }) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(() => new Set());
   const { filters, updateFilter } = useVideoFilters(initialFilters);
 
-  const toggleMusic = (musicId) => {
+  const toggleMusic = useCallback((musicId: string) => {
     setSelectedMusic((prev) => {
       const newSelected = new Set(prev);
       if (newSelected.has(musicId)) {
@@ -19,7 +19,7 @@ export default function Ui({ initialData, initialFilters }) {
       }
       return newSelected;
     });
-  };
+  }, []);
 
   return (
     <div className="relative container mx-auto h-screen overflow-y-auto pt-[102px]">

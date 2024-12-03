@@ -15,6 +15,7 @@ const filterParams = {
   rankType: [
     { label: '전체', value: 'total' },
     { label: '일간', value: 'daily' },
+    { label: '주간', value: 'weekly' },
   ],
   playlistType: [
     { label: '전체', value: 'all' },
