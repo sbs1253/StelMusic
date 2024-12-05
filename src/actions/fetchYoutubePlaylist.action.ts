@@ -3,9 +3,9 @@
 import { YoutubeVideo } from '@/mocks/types_db';
 import { createServerSupabaseClient } from '@/utils/supabase/server';
 
-type PlaylistType = 'all' | 'original' | 'cover';
-type RankType = 'total' | 'daily' | 'weekly';
-type SortBy = 'views' | 'likes' | 'date';
+export type PlaylistType = 'all' | 'original' | 'cover';
+export type RankType = 'total' | 'daily' | 'weekly';
+export type SortBy = 'views' | 'likes' | 'date';
 interface PlaylistConfig {
   id: string;
   type: PlaylistType;
@@ -189,15 +189,10 @@ export async function getVideos({
   playlistType = 'all',
   sortBy = 'views',
   rankType = 'total',
-  limit = 50,
+  limit = 30,
   offset = 0,
 }: VideoOptions = {}) {
-  console.log(playlistType, sortBy, rankType);
   const supabase = await createServerSupabaseClient();
-  const koreanTime = getKoreanTime();
-  const utcDate = new Date(koreanTime).toISOString().split('T')[0];
-  console.log(koreanTime);
-  console.log(utcDate);
   try {
     // 랭킹 조회 (일간/주간)
     if (['daily', 'weekly'].includes(rankType)) {
@@ -206,7 +201,6 @@ export async function getVideos({
       const { data, error } = await supabase.rpc(functionName, {
         p_playlist_type: playlistType === 'all' ? null : playlistType,
       });
-      console.log(data, rankType);
       if (error) throw error;
 
       // 페이지네이션 적용
@@ -219,7 +213,7 @@ export async function getVideos({
       };
     }
 
-    // 전체 순위 조회 (기존 로직)
+    // 전체 순위 조회
     let query = supabase.from('youtube_videos').select('*', { count: 'exact' });
 
     if (playlistType !== 'all') {
@@ -249,14 +243,40 @@ export async function getVideos({
   }
 }
 
-export async function loadMoreVideos({ sortBy = 'views', page, limit = 30 }: { sortBy; page: number; limit?: number }) {
-  const offset = (page - 1) * limit;
+export interface LoadMoreOptions {
+  playlistType?: PlaylistType;
+  sortBy?: SortBy;
+  rankType?: RankType;
+  page: number;
+  limit?: number;
+}
 
-  const { videos, totalCount, hasMore } = await getVideos({
-    sortBy,
-    limit,
-    offset,
-  });
+export async function loadMoreVideos({
+  playlistType = 'all',
+  sortBy = 'views',
+  rankType = 'total',
+  page = 1,
+  limit = 30,
+}: LoadMoreOptions) {
+  try {
+    const offset = (page - 1) * limit;
 
-  return { videos, hasMore };
+    const { videos, totalCount, hasMore } = await getVideos({
+      playlistType,
+      sortBy,
+      rankType,
+      limit,
+      offset,
+    });
+
+    return {
+      videos,
+      hasMore,
+      totalCount,
+      nextPage: hasMore ? page + 1 : null,
+    };
+  } catch (error) {
+    console.error('Error in loadMoreVideos:', error);
+    throw new Error('Failed to load more videos');
+  }
 }

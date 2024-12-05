@@ -17,7 +17,6 @@ const countMapping = {
   }),
 };
 function getCountsByFilter(video, type = 'total') {
-  console.log(type);
   const { viewCount, likeCount } = countMapping[type](video);
   return {
     viewCount,

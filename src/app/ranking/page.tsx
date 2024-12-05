@@ -9,7 +9,7 @@ export default async function page({ searchParams }) {
     rankType: (searchParams.rankType as VideoFilters['rankType']) || FILTER_OPTIONS.RANK_TYPE.TOTAL,
     playlistType: (searchParams.playlistType as VideoFilters['playlistType']) || FILTER_OPTIONS.PLAYLIST_TYPE.ALL,
   };
-  await fetchYoutubeVideos();
+  // await fetchYoutubeVideos();
 
   const initialData = await getVideos({
     sortBy: initialFilters.sort,
