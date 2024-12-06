@@ -24,6 +24,7 @@ export interface YoutubeVideo {
     videoOwnerChannelTitle: string;
     videoOwnerChannelId: string;
   };
+  playlistType: string;
 }
 
 type Thumbnail = {
@@ -32,4 +33,31 @@ type Thumbnail = {
   height: number;
 };
 
-export type SortType = 'views' | 'likes' | 'date';
+// 필터 관련 타입 정의
+export type SortOption = 'views' | 'likes' | 'date';
+export type RankType = 'total' | 'daily';
+export type PlaylistType = 'all' | 'original' | 'cover';
+
+export interface VideoFilters {
+  sort: SortOption;
+  rankType: RankType;
+  playlistType: PlaylistType;
+}
+
+export const FILTER_OPTIONS = {
+  SORT: {
+    VIEWS: 'views',
+    LIKES: 'likes',
+    DATE: 'date',
+  },
+  RANK_TYPE: {
+    TOTAL: 'total',
+    // WEEKLY: 'weekly',
+    DAILY: 'daily',
+  },
+  PLAYLIST_TYPE: {
+    ALL: 'all',
+    ORIGINAL: 'original',
+    COVER: 'cover',
+  },
+} as const;

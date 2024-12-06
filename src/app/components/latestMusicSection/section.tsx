@@ -10,6 +10,7 @@ import Card from '@/app/components/latestMusicSection/card';
 export default function Section({ videos }) {
   return (
     <div className="relative">
+      <h2 className="text-xl font-bold text-brand-text">최신 음악</h2>
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         pagination={{

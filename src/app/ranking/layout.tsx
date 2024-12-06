@@ -1,4 +1,4 @@
-import RankingSkeleton from '@/components/skeleton/rankingSkeleton';
+import RankingSkeleton from '@/app/ranking/components/videoRankingSection/rankingSkeleton';
 import { ReactNode, Suspense } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
