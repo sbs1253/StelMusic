@@ -13,9 +13,16 @@ interface UseInfiniteScrollProps {
     sortBy: SortBy;
     rankType: RankType;
   };
+  searchQuery?: string;
+  isSearchMode?: boolean;
 }
 
-export function useInfiniteScroll({ initialData, filters }: UseInfiniteScrollProps) {
+export function useInfiniteScroll({
+  initialData,
+  filters,
+  searchQuery = '',
+  isSearchMode = false,
+}: UseInfiniteScrollProps) {
   const [videos, setVideos] = useState(initialData.videos);
   const [hasMore, setHasMore] = useState(initialData.hasMore);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +33,6 @@ export function useInfiniteScroll({ initialData, filters }: UseInfiniteScrollPro
   });
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  console.log(timeoutRef);
   const loadMore = useCallback(async () => {
     if (isLoading || !hasMore || !inView) return;
 
@@ -73,12 +79,6 @@ export function useInfiniteScroll({ initialData, filters }: UseInfiniteScrollPro
       loadMore();
     }
   }, [inView, loadMore]);
-  // 필터가 변경될 때 데이터 초기화
-  // useEffect(() => {
-  //   setVideos(initialData.videos);
-  //   setHasMore(initialData.hasMore);
-  //   setPage(1);
-  // }, [filters, initialData]);
   const prevFiltersRef = useRef(filters);
 
   // 필터 변경 감지
@@ -87,7 +87,6 @@ export function useInfiniteScroll({ initialData, filters }: UseInfiniteScrollPro
       prevFiltersRef.current.playlistType !== filters.playlistType ||
       prevFiltersRef.current.sortBy !== filters.sortBy ||
       prevFiltersRef.current.rankType !== filters.rankType;
-    // console.log(hasChanged);
     if (hasChanged) {
       prevFiltersRef.current = filters;
       setVideos(initialData.videos);

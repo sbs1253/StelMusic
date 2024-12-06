@@ -1,37 +1,64 @@
+// app/ranking/components/playControl.tsx
 import { usePlaylist } from '@/hooks/usePlaylist';
 import { PlayArrowRounded, PlaylistAdd } from '@mui/icons-material';
 
-const PlaybackControl = ({ videos, selectedMusic }) => {
+interface PlaybackControlProps {
+  videos: any[];
+  selectedMusic: Set<string>;
+}
+
+const PlaybackControl = ({ videos, selectedMusic }: PlaybackControlProps) => {
   const { handlePlayAll, handlePlaySelected } = usePlaylist();
-  const hasSelectedMusic = selectedMusic?.size > 0;
+  const hasSelectedMusic = selectedMusic.size > 0;
+
+  const handlePlay = async (type: 'selected' | 'all') => {
+    try {
+      if (type === 'selected') {
+        handlePlaySelected(selectedMusic);
+      } else {
+        handlePlayAll(videos);
+      }
+    } catch (error) {
+      console.error('Failed to play music:', error);
+    }
+  };
 
   return (
-    <div className="fixed bottom-16 left-0 right-0 max-w-lg mx-auto bg-white ">
+    <div className="fixed bottom-16 left-0 right-0 max-w-lg mx-auto bg-white shadow-lg border-t border-gray-100">
       <div className="flex justify-between items-center">
         {hasSelectedMusic ? (
           <>
             <button
-              onClick={() => handlePlaySelected(selectedMusic)}
-              className="flex-1 flex items-center justify-center gap-2 py-3 bg-brand-primary/90 text-white hover:bg-brand-primary  transition-colors"
+              onClick={() => handlePlay('selected')}
+              className="flex-1 flex items-center justify-center gap-2 py-3.5 
+                      bg-brand-primary text-white 
+                      hover:bg-brand-primary/90 active:bg-brand-primary/80 
+                      transition-colors duration-200"
             >
-              <PlayArrowRounded />
-              <span>선택곡 재생 ({selectedMusic.size}곡)</span>
+              <PlayArrowRounded className="w-5 h-5" />
+              <span className="font-medium">선택곡 재생 ({selectedMusic.size}곡)</span>
             </button>
             <button
-              onClick={() => handlePlayAll(videos)}
-              className="flex-1 flex items-center justify-center gap-2 py-3 bg-gray-100 hover:bg-gray-200 transition-colors"
+              onClick={() => handlePlay('all')}
+              className="flex-1 flex items-center justify-center gap-2 py-3.5 
+                      bg-gray-50 text-gray-700
+                      hover:bg-gray-100 active:bg-gray-200
+                      transition-colors duration-200"
             >
-              <PlaylistAdd />
-              <span>전체재생</span>
+              <PlaylistAdd className="w-5 h-5" />
+              <span className="font-medium">Top50 재생</span>
             </button>
           </>
         ) : (
           <button
-            onClick={() => handlePlayAll(videos)}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-brand-primary/90 text-white hover:bg-brand-primary transition-colors"
+            onClick={() => handlePlay('all')}
+            className="w-full flex items-center justify-center gap-2 py-3.5 
+                      bg-brand-primary text-white
+                      hover:bg-brand-primary/90 active:bg-brand-primary/80
+                      transition-colors duration-200"
           >
-            <PlayArrowRounded />
-            <span>전체재생</span>
+            <PlayArrowRounded className="w-5 h-5" />
+            <span className="font-medium">Top50 재생</span>
           </button>
         )}
       </div>

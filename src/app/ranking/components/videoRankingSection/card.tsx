@@ -1,72 +1,93 @@
+import { VideoLink } from '@/components/link';
 import { formatDate, formatLikeCount, formatViewCount } from '@/utils/formatters';
 import Image from 'next/image';
-import Link from 'next/link';
+import { CheckCircle } from '@mui/icons-material';
 
+const rankStyles = {
+  top3: 'text-xl font-bold text-brand-primary',
+  normal: 'text-lg font-medium text-brand-secondary',
+};
+
+// 통계 데이터 계산 함수
 const countMapping = {
   daily: (video) => ({
     viewCount: video.view_increase,
     likeCount: video.like_increase,
+    label: '일간',
   }),
   weekly: (video) => ({
     viewCount: video.weekly_view_increase,
     likeCount: video.weekly_like_increase,
+    label: '주간',
   }),
   total: (video) => ({
     viewCount: video.view_count,
     likeCount: video.like_count,
+    label: '전체',
   }),
 };
+
 function getCountsByFilter(video, type = 'total') {
-  const { viewCount, likeCount } = countMapping[type](video);
+  const counts = countMapping[type](video);
   return {
-    viewCount,
-    likeCount,
+    ...counts,
     publishedAt: video.published_at.split('T')[0],
   };
 }
 
 export default function Card({ video, index, filters, toggleMusic, selectedMusic }) {
-  const { viewCount, likeCount, publishedAt } = getCountsByFilter(video, filters.rankType);
-  const sort = {
-    views: <span>{formatViewCount(viewCount)}</span>,
-    likes: <span>{formatLikeCount(likeCount)}</span>,
-    date: <span>{formatDate(publishedAt)}</span>,
+  const { viewCount, likeCount, publishedAt, label } = getCountsByFilter(video, filters.rankType);
+  const isSelected = selectedMusic.has(video.video_id);
+
+  const sortDisplay = {
+    views: `${label} 조회수 ${formatViewCount(viewCount)}`,
+    likes: `${label} 좋아요 ${formatLikeCount(likeCount)}`,
+    date: formatDate(publishedAt),
   };
 
   return (
     <div
-      className={`relative flex items-center gap-2 p-4 w-full h-14 ${
-        selectedMusic.has(video.id) ? 'bg-brand-secondary/30 hover:bg-brand-secondary/40' : 'hover:bg-gray-100'
-      }`}
-      onClick={() => toggleMusic(video.id)}
+      className={`relative flex items-center gap-4 p-3 rounded-lg transition-all duration-200 cursor-pointer
+        ${isSelected ? 'bg-brand-background hover:bg-brand-background/80' : 'hover:bg-gray-50'}`}
+      onClick={() => toggleMusic(video.video_id)}
     >
-      <p className={`w-4 text-center font-bold ${index < 3 ? 'text-brand-primary' : 'text-brand-secondary'}`}>
+      {/* 순위 표시 */}
+      <div className={`flex-shrink-0 w-8 text-center ${index < 3 ? rankStyles.top3 : rankStyles.normal}`}>
         {index + 1}
-      </p>
-      {/* <Image
-        src={video.snippet.thumbnails.medium.url}
-        alt={video.snippet.title}
-        width={48}
-        height={40}
-        className="w-12 rounded-lg object-contain"
-        style={{ width: '48px', height: 'auto' }}
-      /> */}
-      <div className="w-12 h-10 bg-blue-gray-300"></div>
-      <div>
-        <Link href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" className="text-sm line-clamp-1">
-          {video.title}
-        </Link>
-        <p className={`text-xs ${selectedMusic.has(video.id) ? 'text-black' : 'text-gray-500'}`}>
-          {video.video_owner_channel_title}
-        </p>
       </div>
-      <div
-        className={`absolute bottom-1 right-1 flex gap-1 text-xs ${
-          selectedMusic.has(video.video_id) ? 'text-black' : 'text-gray-500'
-        }`}
-      >
-        {/* <span className="text-xs text-gray-500">구독</span> */}
-        {sort[filters.sort]}
+
+      {/* 썸네일 영역 */}
+      <div className="relative flex-shrink-0">
+        <Image
+          src={video.thumbnail_url}
+          alt={video.title}
+          width={80}
+          height={80}
+          className="rounded-md object-cover bg-gray-100"
+        />
+        {isSelected && (
+          <div className="absolute -top-2 -right-2 bg-white rounded-full">
+            <CheckCircle className="w-5 h-5 text-brand-primary" />
+          </div>
+        )}
+      </div>
+
+      {/* 컨텐츠 영역 */}
+      <div className="flex-1 min-w-0">
+        <VideoLink
+          videoId={video.video_id}
+          className={`text-sm font-medium line-clamp-2 leading-snug
+            ${isSelected ? 'text-brand-primary' : 'text-gray-900'}
+            hover:text-brand-primary transition-colors`}
+        >
+          {video.title}
+        </VideoLink>
+
+        <div className="mt-1 flex items-center gap-2">
+          <p className="text-xs text-brand-text truncate">{video.video_owner_channel_title}</p>
+          <span className="w-1 h-1 rounded-full bg-gray-300" />
+          <span className="text-xs text-brand-text">{sortDisplay[filters.sort]}</span>
+        </div>
       </div>
     </div>
   );
