@@ -90,7 +90,7 @@ export async function fetchYoutubeVideos() {
     throw error;
   }
 }
-const getKoreanTime = (): Date => {
+const getKoreanTime = () => {
   const offset = 1000 * 60 * 60 * 9; // UTC+9
   return new Date(Date.now() + offset);
 };
@@ -112,8 +112,8 @@ async function saveVideoToSupabase(videos: YoutubeVideo[]) {
     playlist_id: video.snippet.playlistId,
     playlist_type: video.playlistType,
     position: video.snippet.position,
-    created_at: koreanTime,
-    updated_at: koreanTime,
+    created_at: koreanTime.toISOString(),
+    updated_at: koreanTime.toISOString(),
   }));
   const { error } = await supabase.from('youtube_videos').upsert(mappedVideos, {
     onConflict: 'video_id',
@@ -139,7 +139,7 @@ async function saveDailyStats(videos: YoutubeVideo[]) {
     view_count: video.viewCount,
     like_count: video.likeCount,
     date: iskoreanTime, // 명시적으로 날짜 지정
-    created_at: koreanTime,
+    created_at: koreanTime.toISOString(),
   }));
 
   // 개발 환경에서는 upsert, 프로덕션에서는 기존 데이터가 없을 때만 삽입
