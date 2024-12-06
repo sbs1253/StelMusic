@@ -7,9 +7,8 @@ import { TopRankingSection } from '@/app/components/topRankingSection';
 import { ChannelSection } from '@/app/components/channelSection';
 
 export default function UI({ latestVideos, topVideo, initialChannel }) {
-  console.log(latestVideos);
   return (
-    <div className="flex flex-col gap-6 p-4">
+    <div className="flex flex-col gap-8 p-4 py-16">
       {/* 최신 음악 섹션 */}
       <section>
         <Suspense fallback={<LatestMusicSection.Skeleton />}>

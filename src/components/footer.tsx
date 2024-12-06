@@ -7,18 +7,20 @@ import HomeIcon from '@mui/icons-material/Home';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import PersonIcon from '@mui/icons-material/Person';
+import { Search } from '@mui/icons-material';
 
-export default function Footer() {
+export default function Footer({ className = '' }) {
   const pathname = usePathname();
   const navigation = [
     { name: '홈', href: '/', icon: HomeIcon },
     { name: '인기순위', href: '/ranking', icon: WhatshotIcon },
-    { name: '채널', href: '/channel', icon: SubscriptionsIcon },
-    { name: '내정보', href: '/profile', icon: PersonIcon },
+    { name: '검색', href: '/search', icon: Search },
+    // { name: '내정보', href: '/profile', icon: PersonIcon },
   ];
 
   return (
-    <footer className="fixed bottom-0 w-full max-w-lg bg-white z-[9999]">
+    // <footer className="fixed bottom-0 w-full max-w-lg bg-white z-[9999]">
+    <footer className={`h-16 border-t border-gray-100 z-[9999] ${className}`}>
       <nav className="flex justify-around items-center h-16">
         {navigation.map((item) => {
           const Icon = item.icon;

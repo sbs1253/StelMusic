@@ -184,6 +184,7 @@ interface VideoOptions {
   rankType?: RankType;
   limit?: number;
   offset?: number;
+  searchQuery?: string;
 }
 export async function getVideos({
   playlistType = 'all',
@@ -191,6 +192,7 @@ export async function getVideos({
   rankType = 'total',
   limit = 30,
   offset = 0,
+  searchQuery = '',
 }: VideoOptions = {}) {
   const supabase = await createServerSupabaseClient();
   try {
@@ -215,7 +217,9 @@ export async function getVideos({
 
     // 전체 순위 조회
     let query = supabase.from('youtube_videos').select('*', { count: 'exact' });
-
+    if (searchQuery.trim()) {
+      query = query.or(`title.ilike.%${searchQuery}%,` + `video_owner_channel_title.ilike.%${searchQuery}%`);
+    }
     if (playlistType !== 'all') {
       query = query.eq('playlist_type', playlistType);
     }
