@@ -1,21 +1,24 @@
 'use client';
 
+import { VideoLink } from '@/components/link';
 import Image from 'next/image';
 
 export default function Card({ video }) {
   return (
     <div className="w-[250px] ">
-      <Image
-        src={video.snippet.thumbnails.high.url}
-        alt={video.snippet.title}
-        width={300}
-        height={300}
-        className="rounded-lg object-cover"
-        style={{ width: '250px', height: 'auto' }}
-      />
-      <div className="mt-2">
-        <h3 className="text-sm font-medium line-clamp-2">{video.snippet.title}</h3>
-      </div>
+      <VideoLink videoId={video.video_id}>
+        <div className="space-y-2 hover:scale-105 transition-transform duration-200">
+          <Image
+            src={video.thumbnail_url}
+            alt={video.title}
+            width={320}
+            height={180}
+            className="rounded-lg w-full object-cover"
+          />
+          <h3 className="font-medium line-clamp-2">{video.title}</h3>
+          <p className="text-sm text-gray-500">{video.video_owner_channel_title}</p>
+        </div>
+      </VideoLink>
     </div>
   );
 }
