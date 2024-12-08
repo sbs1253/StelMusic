@@ -9,14 +9,15 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      message: 'YouTube data updated successfully',
-      ...result,
+      message: 'Hourly video data updated successfully',
+      updatedVideos: result.count,
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Failed to update YouTube data:', error);
+    console.error('Failed to update hourly video data:', error);
     return NextResponse.json(
       {
-        error: 'Failed to update YouTube data',
+        error: 'Failed to update video data',
         message: error.message,
       },
       { status: 500 }

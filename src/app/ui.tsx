@@ -2,7 +2,7 @@
 
 import React, { Suspense } from 'react';
 import Link from 'next/link';
-import { LatestMusicSection } from './components/latestMusicSection';
+import { LatestMusicSection } from '@/app/components/latestMusicSection';
 import { TopRankingSection } from '@/app/components/topRankingSection';
 import { ChannelSection } from '@/app/components/channelSection';
 

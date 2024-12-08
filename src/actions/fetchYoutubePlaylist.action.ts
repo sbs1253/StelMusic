@@ -132,7 +132,7 @@ async function saveDailyStats(videos: YoutubeVideo[]) {
   const koreanTime = getKoreanTime();
   const iskoreanTime = new Date(koreanTime).toISOString().split('T')[0];
 
-  const { data: existingData } = await supabase.from('daily_video_stats').select('video_id').eq('date', iskoreanTime);
+  const { data } = await supabase.from('daily_video_stats').select('video_id').eq('date', iskoreanTime);
 
   const dailyStats = videos.map((video) => ({
     video_id: video.id,
@@ -155,7 +155,7 @@ async function saveDailyStats(videos: YoutubeVideo[]) {
   } else {
     // 프로덕션 환경에서는 해당 날짜에 데이터가 없을 때만 삽입
     // 00시 00분에만 데이터 삽입하고 1시간 마다 업데이트될때는 방지하기위함
-    if (!existingData?.length) {
+    if (!data?.length) {
       const { error } = await supabase.from('daily_video_stats').insert(dailyStats);
 
       if (error) {
@@ -204,7 +204,6 @@ export async function getVideos({
         p_playlist_type: playlistType === 'all' ? null : playlistType,
       });
       if (error) throw error;
-
       // 페이지네이션 적용
       const paginatedData = data.slice(offset, offset + limit);
 
