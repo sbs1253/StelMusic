@@ -34,13 +34,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="font-pretendard">
+      <body className="font-pretendard bg-brand-background min-h-screen">
         <ReactQueryClientProvider>
           <ThemeProvider>
             <Providers>
-              <div className="min-h-screen flex flex-col mx-auto max-w-lg bg-white relative">
+              <div className="min-h-screen flex flex-col mx-auto max-w-lg lg:max-w-5xl bg-white relative">
                 <main className="flex-1">{children}</main>
-                <Footer className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white" />
+                {/* 
+                  Footer:
+                  - 모바일: 화면 하단에 고정
+                  - 데스크톱: 컨테이너 너비에 맞춰 확장
+                */}
+                <Footer className="fixed bottom-0 left-0 right-0 max-w-lg lg:max-w-5xl mx-auto bg-white" />
               </div>
             </Providers>
           </ThemeProvider>

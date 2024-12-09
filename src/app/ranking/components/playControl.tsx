@@ -23,7 +23,7 @@ const PlaybackControl = ({ videos, selectedMusic }: PlaybackControlProps) => {
   };
 
   return (
-    <div className="fixed bottom-16 left-0 right-0 max-w-lg mx-auto bg-white shadow-lg border-t border-gray-100">
+    <div className="fixed bottom-16 left-0 right-0 mx-auto max-w-lg lg:max-w-5xl bg-white shadow-lg border-t border-gray-100">
       <div className="flex justify-between items-center">
         {hasSelectedMusic ? (
           <>

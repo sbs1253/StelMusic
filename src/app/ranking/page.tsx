@@ -1,7 +1,7 @@
 import Ui from '@/app/ranking/ui';
 import { FILTER_OPTIONS, VideoFilters } from '@/types/youtube';
 import { Suspense } from 'react';
-import RankingSkeleton from '@/app/ranking/components/videoRankingSection/rankingSkeleton';
+import RankingSkeleton from '@/app/ranking/components/rankingSkeleton';
 import { getVideos } from '@/actions/youtube/video.action.ts';
 export default async function page({ searchParams }) {
   const initialFilters: VideoFilters = {

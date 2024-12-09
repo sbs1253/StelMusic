@@ -24,7 +24,7 @@ const filterParams = {
 } as const;
 export default function Section({ title, filters, onFilterChange }) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-[9999] max-w-lg mx-auto bg-white/80 backdrop-blur-md border-b">
+    <header className="fixed top-0 left-0 right-0 z-[9999] mx-auto max-w-lg lg:max-w-5xl bg-white/80 backdrop-blur-md border-b">
       <div className="relative px-4 py-3">
         <Link href={'/'} className="absolute left-1 top-1/2 -translate-y-1/2">
           <IconButton variant="text">

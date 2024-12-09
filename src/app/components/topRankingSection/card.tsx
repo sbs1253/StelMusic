@@ -1,4 +1,4 @@
-import { VideoLink } from '@/components/layout/link';
+import { VideoLink } from '@/components/layout/videoLink';
 import { PlayCircle } from '@mui/icons-material';
 import Image from 'next/image';
 
