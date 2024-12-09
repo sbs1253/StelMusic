@@ -1,10 +1,9 @@
-// hooks/useSearch.ts
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { getVideos } from '@/actions/fetchYoutubePlaylist.action';
 import { useDebounce } from '@/hooks/useDebounce';
+import { getVideos } from '@/actions/youtube /video.action.ts';
 
-export function useSearch(initialData: any) {
+export function useSearch(initialData) {
   const [videos, setVideos] = useState(initialData.videos);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialData.hasMore);

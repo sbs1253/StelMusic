@@ -1,12 +1,6 @@
 'use client';
 
-import { YoutubeVideo } from '@/mocks/types_db';
-import { createPlaylist } from '@/utils/createPlaylist';
-
-interface UsePlaylistProps {
-  videos: YoutubeVideo[];
-  selectedMusic?: Set<string>;
-}
+import { createPlaylist } from '@/lib/utils/createPlaylist';
 
 export function usePlaylist() {
   const handlePlayAll = (videos) => {

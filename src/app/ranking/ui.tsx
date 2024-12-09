@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { Header } from '@/app/ranking/components/headerSection';
+import { Header } from '@/app/ranking/components/header';
 import { VideoRankingSection } from '@/app/ranking/components/videoRankingSection';
 import { useVideoFilters } from '@/hooks/useVideoFilters';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';

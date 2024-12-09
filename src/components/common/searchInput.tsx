@@ -1,4 +1,3 @@
-// components/SearchInput.tsx
 'use client';
 
 import { ChangeEvent, useEffect, useState } from 'react';

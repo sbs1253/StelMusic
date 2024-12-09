@@ -1,15 +1,11 @@
-// components/layout/Navbar.tsx
-import { SearchInput } from '@/app/search/components/searchInput';
-import { Logo } from '@/components/logo';
+import { SearchInput } from '@/components/common/searchInput';
+import { Logo } from '@/components/layout /logo';
 import Link from 'next/link';
 
 export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 max-w-lg mx-auto h-16 bg-white/80 backdrop-blur-md z-50">
       <div className="h-full flex items-center px-4 gap-3">
-        {/* <Link href="/" className="flex-shrink-0 text-xl font-bold">
-          StelMusic
-        </Link> */}
         <Link href="/" className="flex-shrink-0 text-brand-primary hover:text-brand-secondary transition-colors">
           <Logo className="w-24 h-8" />
         </Link>

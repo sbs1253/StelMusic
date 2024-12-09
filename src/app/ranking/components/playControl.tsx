@@ -1,4 +1,3 @@
-// app/ranking/components/playControl.tsx
 import { usePlaylist } from '@/hooks/usePlaylist';
 import { PlayArrowRounded, PlaylistAdd } from '@mui/icons-material';
 
