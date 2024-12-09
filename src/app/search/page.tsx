@@ -1,4 +1,4 @@
-import { getVideos } from '@/actions/youtube /video.action.ts';
+import { getVideos } from '@/actions/youtube/video.action.ts';
 import { SearchResults } from '@/app/search/components/searchSection';
 import { SearchInput } from '@/components/common/searchInput';
 

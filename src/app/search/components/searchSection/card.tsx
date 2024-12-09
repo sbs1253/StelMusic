@@ -1,4 +1,4 @@
-import { VideoLink } from '@/components/layout /link';
+import { VideoLink } from '@/components/layout/link';
 import { formatDate, formatLikeCount, formatViewCount } from '@/lib/utils/formatters';
 import Image from 'next/image';
 import { PlayCircle } from '@mui/icons-material';

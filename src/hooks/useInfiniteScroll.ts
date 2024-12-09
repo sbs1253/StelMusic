@@ -1,4 +1,4 @@
-import { loadMoreVideos } from '@/actions/youtube /video.action.ts';
+import { loadMoreVideos } from '@/actions/youtube/video.action.ts';
 import { PlaylistType, RankType, SortBy } from '@/types/youtube';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';

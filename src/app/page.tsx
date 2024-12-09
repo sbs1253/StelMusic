@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import UI from 'src/app/ui';
 import { HomeSkeleton } from './components/homeSkeleton';
-import { fetchYoutubeChannels } from '@/actions/youtube /youtubeThumbnails.action';
+import { fetchYoutubeChannels } from '@/actions/youtube/youtubeThumbnails.action';
 import { Navbar } from '@/components/common/navBar';
-import { getVideos } from '@/actions/youtube /video.action.ts';
-import { fetchYoutubeVideos } from '@/actions/youtube /youtube.action';
+import { getVideos } from '@/actions/youtube/video.action.ts';
+import { fetchYoutubeVideos } from '@/actions/youtube/youtube.action';
 
 export default async function PlaylistViewer() {
   await fetchYoutubeVideos();

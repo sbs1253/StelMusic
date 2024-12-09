@@ -1,5 +1,5 @@
 import { SearchInput } from '@/components/common/searchInput';
-import { Logo } from '@/components/layout /logo';
+import { Logo } from '@/components/layout/logo';
 import Link from 'next/link';
 
 export function Navbar() {

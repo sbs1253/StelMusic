@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/useDebounce';
-import { getVideos } from '@/actions/youtube /video.action.ts';
+import { getVideos } from '@/actions/youtube/video.action.ts';
 
 export function useSearch(initialData) {
   const [videos, setVideos] = useState(initialData.videos);

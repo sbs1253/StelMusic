@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import ReactQueryClientProvider from 'src/config/ReactQueryClientProvider';
 import { ThemeProvider } from 'src/config/material-tailwind-theme-provider';
-import Footer from '@/components/layout /footer';
+import Footer from '@/components/layout/footer';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
