@@ -2,7 +2,7 @@ import Ui from '@/app/ranking/ui';
 import { FILTER_OPTIONS, VideoFilters } from '@/types/youtube';
 import { Suspense } from 'react';
 import RankingSkeleton from '@/app/ranking/components/videoRankingSection/rankingSkeleton';
-import { getVideos } from '@/actions/youtube /video.action.ts';
+import { getVideos } from '@/actions/youtube/video.action.ts';
 export default async function page({ searchParams }) {
   const initialFilters: VideoFilters = {
     sort: (searchParams.sort as VideoFilters['sort']) || FILTER_OPTIONS.SORT.VIEWS,

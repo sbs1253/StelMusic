@@ -1,6 +1,6 @@
 'use client';
 
-import { VideoLink } from '@/components/layout /link';
+import { VideoLink } from '@/components/layout/link';
 import Image from 'next/image';
 
 export default function Card({ video }) {
