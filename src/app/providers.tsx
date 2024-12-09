@@ -20,11 +20,11 @@ export function Providers({ children }: ProvidersProps) {
         }
         return prev + 2;
       });
-    }, 10);
+    }, 30);
 
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 700);
+    }, 1800);
 
     return () => {
       clearInterval(progressInterval);

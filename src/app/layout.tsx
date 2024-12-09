@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import './globals.css';
 import ReactQueryClientProvider from 'src/config/ReactQueryClientProvider';
 import { ThemeProvider } from 'src/config/material-tailwind-theme-provider';
@@ -40,11 +39,6 @@ export default function RootLayout({
             <Providers>
               <div className="min-h-screen flex flex-col mx-auto max-w-lg lg:max-w-5xl bg-white relative">
                 <main className="flex-1">{children}</main>
-                {/* 
-                  Footer:
-                  - 모바일: 화면 하단에 고정
-                  - 데스크톱: 컨테이너 너비에 맞춰 확장
-                */}
                 <Footer className="fixed bottom-0 left-0 right-0 max-w-lg lg:max-w-5xl mx-auto bg-white" />
               </div>
             </Providers>
