@@ -1,5 +1,4 @@
-import { VideoLink } from '@/components/link';
-import { flexRow } from '@/mixins/styles';
+import { VideoLink } from '@/components/layout /link';
 import { PlayCircle } from '@mui/icons-material';
 import Image from 'next/image';
 

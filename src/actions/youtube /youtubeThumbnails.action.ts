@@ -1,6 +1,6 @@
 'use server';
 
-import { channels } from '@/mocks/channel';
+import { channels } from '@/constants/channel';
 
 // 메모리 캐싱
 let cachedChannels: typeof channels | null = null;

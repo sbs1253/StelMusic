@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import { FreeMode } from 'swiper/modules';
-import { CHANNEL_LIST } from '@/lib/constants';
+import { CHANNEL_LIST } from '@/constants/constants';
 import Card from '@/app/components/channelSection/card';
 
 export default function Section({ initialChannel }) {

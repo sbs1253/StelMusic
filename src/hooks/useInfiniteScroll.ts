@@ -1,4 +1,5 @@
-import { PlaylistType, SortBy, RankType, loadMoreVideos } from '@/actions/fetchYoutubePlaylist.action';
+import { loadMoreVideos } from '@/actions/youtube /video.action.ts';
+import { PlaylistType, RankType, SortBy } from '@/types/youtube';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 

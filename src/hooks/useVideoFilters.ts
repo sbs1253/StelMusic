@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { VideoFilters } from '@/mocks/types_db';
+import { VideoFilters } from '@/types/youtube';
 
 export function useVideoFilters(initialFilters: VideoFilters) {
   const router = useRouter();

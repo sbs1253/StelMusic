@@ -1,6 +1,5 @@
 'use client';
 
-import { channels } from '@/mocks/channel';
 import Image from 'next/image';
 
 export default function Card({ channelName, channelsData }) {

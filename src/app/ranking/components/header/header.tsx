@@ -1,10 +1,9 @@
 'use client';
 
-import TagList from '@/app/ranking/components/headerSection/tagList';
 import { IconButton } from '@material-tailwind/react';
 import Link from 'next/link';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import FilterTabs from '@/app/ranking/components/headerSection/filterTabs';
+import FilterTabs from '@/app/ranking/components/header/filterTabs';
 
 const filterParams = {
   sort: [
@@ -58,18 +57,3 @@ export default function Section({ title, filters, onFilterChange }) {
     </header>
   );
 }
-
-Section.Skeleton = function Skeleton() {
-  return (
-    <div className="fixed top-0 left-0 right-0 z-[9999] max-w-lg mx-auto bg-white/80 backdrop-blur-md border-b">
-      <div className="px-4 py-3">
-        <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mx-auto" />
-      </div>
-      <div className="flex gap-2 p-2 overflow-x-auto">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-8 w-20 bg-gray-200 rounded animate-pulse" />
-        ))}
-      </div>
-    </div>
-  );
-};

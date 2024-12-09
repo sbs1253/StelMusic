@@ -1,12 +1,12 @@
 'use client';
 
-import SearchCard from '@/app/search/components/searchCard';
+import Card from '@/app/search/components/searchSection/card';
 import { useSearch } from '@/hooks/useSearch';
 import { Search } from '@mui/icons-material';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-export default function SearchResults({ initialData }) {
+export default function Section({ initialData }) {
   const { videos, isLoading, hasMore, loadMore } = useSearch(initialData);
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
@@ -37,7 +37,7 @@ export default function SearchResults({ initialData }) {
   return (
     <div className="divide-y divide-gray-100">
       {videos.map((video) => (
-        <SearchCard key={video.video_id} video={video} sort="views" />
+        <Card key={video.video_id} video={video} sort="views" />
       ))}
       {(hasMore || isLoading) && (
         <div ref={loadMoreRef} className="py-6 flex justify-center">

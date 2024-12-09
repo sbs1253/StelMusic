@@ -1,5 +1,4 @@
 export function createPlaylist(input) {
-  console.log(input);
   try {
     if (input.length === 0) {
       throw new Error('선택된 동영상이 없습니다.');

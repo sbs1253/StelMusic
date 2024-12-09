@@ -1,9 +1,9 @@
-import { VideoLink } from '@/components/link';
-import { formatDate, formatLikeCount, formatViewCount } from '@/utils/formatters';
+import { VideoLink } from '@/components/layout /link';
+import { formatDate, formatLikeCount, formatViewCount } from '@/lib/utils/formatters';
 import Image from 'next/image';
 import { PlayCircle } from '@mui/icons-material';
 
-export default function SearchCard({ video, sort = 'views' }) {
+export default function Card({ video, sort = 'views' }) {
   return (
     <div className="group relative flex items-start gap-4 p-3 hover:bg-brand-background/50 rounded-lg transition-colors duration-200">
       {/* 썸네일 컨테이너 */}

@@ -1,12 +1,9 @@
-// components/footer.tsx
 'use client';
 
 import Link from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import HomeIcon from '@mui/icons-material/Home';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
-import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
-import PersonIcon from '@mui/icons-material/Person';
 import { Search } from '@mui/icons-material';
 
 export default function Footer({ className = '' }) {
@@ -19,7 +16,6 @@ export default function Footer({ className = '' }) {
   ];
 
   return (
-    // <footer className="fixed bottom-0 w-full max-w-lg bg-white z-[9999]">
     <footer className={`h-16 border-t border-gray-100 z-[9999] ${className}`}>
       <nav className="flex justify-around items-center h-16">
         {navigation.map((item) => {

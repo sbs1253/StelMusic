@@ -1,7 +1,6 @@
-// app/search/page.tsx
-import { getVideos } from '@/actions/fetchYoutubePlaylist.action';
-import { SearchInput } from '@/app/search/components/searchInput';
-import SearchResults from '@/app/search/components/searchResults';
+import { getVideos } from '@/actions/youtube /video.action.ts';
+import { SearchResults } from '@/app/search/components/searchSection';
+import { SearchInput } from '@/components/common/searchInput';
 
 export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
   const query = searchParams.q;
