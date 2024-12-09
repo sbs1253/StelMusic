@@ -4,21 +4,27 @@ import './globals.css';
 import ReactQueryClientProvider from 'src/config/ReactQueryClientProvider';
 import { ThemeProvider } from 'src/config/material-tailwind-theme-provider';
 import Footer from '@/components/layout/footer';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
+import { Providers } from '@/app/providers';
 
 export const metadata: Metadata = {
   title: 'StelMusic',
   description: '스텔라이브의 노래를 감상해보세요!',
+  openGraph: {
+    title: 'StelMusic',
+    description: '스텔라이브의 노래를 감상해보세요!',
+    type: 'website',
+    locale: 'ko_KR',
+    url: 'https://stelmusic.vercel.app',
+    siteName: 'StelMusic',
+    images: [
+      {
+        url: 'https://stelmusic.vercel.app/images/logo-main.png',
+        width: 800,
+        height: 600,
+        alt: 'StelMusic Logo',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -28,13 +34,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <body className="font-pretendard">
         <ReactQueryClientProvider>
           <ThemeProvider>
-            <div className="min-h-screen flex flex-col mx-auto max-w-lg bg-white relative">
-              <main className="flex-1">{children}</main>
-              <Footer className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white" />
-            </div>
+            <Providers>
+              <div className="min-h-screen flex flex-col mx-auto max-w-lg bg-white relative">
+                <main className="flex-1">{children}</main>
+                <Footer className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white" />
+              </div>
+            </Providers>
           </ThemeProvider>
         </ReactQueryClientProvider>
       </body>

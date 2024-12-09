@@ -9,7 +9,32 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        pretendard: ['Pretendard', 'sans-serif'],
+        sans: ['Pretendard', 'sans-serif'],
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        scaleIn: {
+          '0%': {
+            opacity: '0',
+            transform: 'scale(0.95)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'scale(1)',
+          },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 1s ease-out',
+        scaleIn: 'scaleIn 1s ease-out',
+      },
+    },
     fontSize: {
       xs: [
         '12px',
@@ -115,6 +140,7 @@ const config: Config = {
       'cliche-member-4-text': '#2e7d32',
     },
   },
+
   plugins: [require('@tailwindcss/typography'), require('tailwind-scrollbar-hide')],
 };
 

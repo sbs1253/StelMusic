@@ -3,7 +3,6 @@ import { getKoreanTime } from '@/lib/utils/date';
 import { YoutubeVideoResponse } from '@/types/youtube';
 
 export async function saveVideoToSupabase(videos: YoutubeVideoResponse[]) {
-  console.log(videos);
   const supabase = await createServerSupabaseClient();
   const koreanTime = getKoreanTime();
   const mappedVideos = videos.map((video) => ({

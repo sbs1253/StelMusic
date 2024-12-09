@@ -10,10 +10,8 @@ export function usePlaylist() {
   };
 
   const handlePlaySelected = (selectedMusic) => {
-    console.log(selectedMusic);
     if (!selectedMusic) return;
     const selectedVideos = Array.from(selectedMusic).map((v) => v);
-    console.log(selectedVideos);
     createPlaylist(selectedVideos);
   };
 

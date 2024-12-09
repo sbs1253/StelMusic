@@ -14,7 +14,7 @@ export default async function page({ searchParams }) {
     sortBy: initialFilters.sort,
     rankType: initialFilters.rankType,
     playlistType: initialFilters.playlistType,
-    limit: 30,
+    limit: 50,
     offset: 0,
   });
 
