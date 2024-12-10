@@ -2,7 +2,7 @@ import { Tabs, TabsHeader, Tab } from '@material-tailwind/react';
 
 export default function FilterTabs({ options, value, onChange, variant = 'default' }) {
   return (
-    <Tabs value={value} className={variant === 'fullWidth' ? 'w-full' : 'flex-1'}>
+    <Tabs key={`tabs-${value}`} value={value} className={variant === 'fullWidth' ? 'w-full' : 'flex-1'}>
       <TabsHeader
         className="rounded-md bg-gray-50 p-1"
         indicatorProps={{

@@ -22,7 +22,7 @@ const filterParams = {
     { label: '커버', value: 'cover' },
   ],
 } as const;
-export default function Section({ title, filters, onFilterChange }) {
+export default function Section({ title, filters, updateFilter }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-[9999] mx-auto max-w-lg lg:max-w-5xl bg-white/80 backdrop-blur-md border-b">
       <div className="relative px-4 py-3">
@@ -39,18 +39,18 @@ export default function Section({ title, filters, onFilterChange }) {
           <FilterTabs
             options={filterParams.rankType}
             value={filters.rankType}
-            onChange={(value) => onFilterChange('rankType', value)}
+            onChange={(value) => updateFilter('rankType', value)}
           />
           <FilterTabs
             options={filterParams.playlistType}
             value={filters.playlistType}
-            onChange={(value) => onFilterChange('playlistType', value)}
+            onChange={(value) => updateFilter('playlistType', value)}
           />
         </div>
         <FilterTabs
           options={filterParams.sort}
           value={filters.sort}
-          onChange={(value) => onFilterChange('sort', value)}
+          onChange={(value) => updateFilter('sort', value)}
           variant="fullWidth"
         />
       </div>

@@ -34,7 +34,7 @@ export default function Ui({ initialData, initialFilters }) {
 
   return (
     <div ref={containerRef} className="relative container mx-auto h-screen overflow-y-auto pt-[166px] pb-16">
-      <Header title="인기 순위" filters={filters} onFilterChange={updateFilter} />
+      <Header title="인기 순위" filters={filters} updateFilter={updateFilter} />
       <div className="px-4 text-sm text-brand-text">
         {selectedMusic.size > 0 && (
           <p>

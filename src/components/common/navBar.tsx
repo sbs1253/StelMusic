@@ -13,7 +13,7 @@ export function Navbar() {
             width={100}
             height={64}
             priority
-            className="object-contain"
+            className="w-full h-auto object-contain"
           />
         </Link>
         <div className="flex-1">

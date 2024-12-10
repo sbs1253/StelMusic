@@ -77,21 +77,3 @@ export interface VideoFilters {
   rankType: RankType;
   playlistType: PlaylistType;
 }
-
-export const FILTER_OPTIONS = {
-  SORT: {
-    VIEWS: 'views',
-    LIKES: 'likes',
-    DATE: 'date',
-  },
-  RANK_TYPE: {
-    TOTAL: 'total',
-    WEEKLY: 'weekly',
-    DAILY: 'daily',
-  },
-  PLAYLIST_TYPE: {
-    ALL: 'all',
-    ORIGINAL: 'original',
-    COVER: 'cover',
-  },
-} as const;
