@@ -61,7 +61,6 @@ export async function saveDailyStats(videos: YoutubeVideoResponse[]) {
   } else {
     if (!data?.length) {
       const { error } = await supabase.from('daily_video_stats').insert(dailyStats);
-
       if (error) {
         console.error('Error saving daily stats:', error);
         throw error;

@@ -11,3 +11,21 @@ export const CHANNEL_LIST = [
   'AOKUMO_RIN',
   'YUZUHA_RIKO',
 ] as const;
+
+export const FILTER_OPTIONS = {
+  SORT: {
+    VIEWS: 'views',
+    LIKES: 'likes',
+    DATE: 'date',
+  },
+  RANK_TYPE: {
+    TOTAL: 'total',
+    WEEKLY: 'weekly',
+    DAILY: 'daily',
+  },
+  PLAYLIST_TYPE: {
+    ALL: 'all',
+    ORIGINAL: 'original',
+    COVER: 'cover',
+  },
+} as const;
