@@ -1,0 +1,61 @@
+name: Fetch YouTube Data
+
+on:
+  schedule:
+    # 매시간 데이터 업데이트 (총 조회수)
+    - cron: '0 * * * *' # 매시 정각
+    # 매일 00:00 KST (15:00 UTC) 일간 통계
+    - cron: '30 4 * * *'
+  push:
+    branches:
+      - main
+      - GitHub-Actions-cron
+  workflow_dispatch: # 수동 실행 옵션
+
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  NEXT_PUBLIC_YOUTUBE_API_KEY: ${{ secrets.NEXT_PUBLIC_YOUTUBE_API_KEY }}
+
+jobs:
+  update-hourly-stats:
+    runs-on: ubuntu-latest
+    if: github.event.schedule != '0 15 * * *' # 일간 통계 시간이 아닐 때만 실행
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run hourly update script
+        run: pnpm ts-node scripts/update-hourly-stats.ts
+
+  update-daily-stats:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 15 * * *' # 일간 통계 시간일 때만 실행
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run daily stats script
+        run: pnpm ts-node scripts/update-daily-stats.ts
