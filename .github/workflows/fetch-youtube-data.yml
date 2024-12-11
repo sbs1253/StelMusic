@@ -5,7 +5,7 @@ on:
     # 매시간 데이터 업데이트 (총 조회수)
     - cron: '0 * * * *' # 매시 정각
     # 매일 00:00 KST (15:00 UTC) 일간 통계
-    - cron: '00 15 * * *'
+    - cron: '0 15 * * *'
   workflow_dispatch: # 수동 실행 옵션
 
 env:
@@ -16,7 +16,6 @@ env:
 jobs:
   update-hourly-stats:
     runs-on: ubuntu-latest
-    if: github.event.schedule != '0 15 * * *' # 일간 통계 시간이 아닐 때만 실행
     steps:
       - uses: actions/checkout@v4
 
@@ -36,8 +35,9 @@ jobs:
         run: pnpm tsx scripts/update-hourly-stats.ts
 
   update-daily-stats:
+    needs: update-hourly-stats
     runs-on: ubuntu-latest
-    if: github.event.schedule == '0 15 * * *' # 일간 통계 시간일 때만 실행
+    if: github.event.schedule == '0 15 * * *'
     steps:
       - uses: actions/checkout@v4
 
