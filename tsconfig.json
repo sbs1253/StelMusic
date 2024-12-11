@@ -32,10 +32,5 @@
     ".next/types/**/*.ts",
     "src/app/ranking/components/videoRankingSection/section.tsz"
   ],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  }
+  "exclude": ["node_modules"]
 }
