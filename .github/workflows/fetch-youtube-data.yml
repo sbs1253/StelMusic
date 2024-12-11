@@ -6,6 +6,10 @@ on:
     - cron: '0 * * * *' # 매시 정각
     # 매일 00:00 KST (15:00 UTC) 일간 통계
     - cron: '0 15 * * *'
+  push:
+    branches:
+      - main
+      - GitHub-Actions-cron
   workflow_dispatch: # 수동 실행 옵션
 
 env:
