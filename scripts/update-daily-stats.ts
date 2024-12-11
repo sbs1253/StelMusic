@@ -9,7 +9,7 @@ async function updateDailyStats() {
     );
     const allVideos = playlistResults.flat();
 
-    const result = await saveDailyStats(allVideos);
+    const result = await saveDailyStats(allVideos, true);
     console.log(`Daily update completed: ${result.count} records created`);
   } catch (error) {
     console.error('Error updating daily stats:', error);

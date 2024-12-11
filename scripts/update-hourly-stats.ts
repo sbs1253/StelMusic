@@ -9,7 +9,7 @@ async function updateHourlyStats() {
     );
     const allVideos = playlistResults.flat();
 
-    const result = await saveVideoToSupabase(allVideos);
+    const result = await saveVideoToSupabase(allVideos, true);
     console.log(`Hourly update completed: ${result.count} videos updated`);
   } catch (error) {
     console.error('Error updating hourly stats:', error);
