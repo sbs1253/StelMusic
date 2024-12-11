@@ -1,9 +1,10 @@
 import { createServerSupabaseClient } from '@/lib/utils/supabase/server';
 import { getKoreanTime } from '@/lib/utils/date';
 import { YoutubeVideoResponse } from '@/types/youtube';
+import { createScriptSupabaseClient } from '@/lib/utils/supabase/script-server';
 
-export async function saveVideoToSupabase(videos: YoutubeVideoResponse[]) {
-  const supabase = await createServerSupabaseClient();
+export async function saveVideoToSupabase(videos: YoutubeVideoResponse[], isScript = false) {
+  const supabase = isScript ? createScriptSupabaseClient() : await createServerSupabaseClient();
   const koreanTime = getKoreanTime();
   const mappedVideos = videos.map((video) => ({
     video_id: video.id,
@@ -34,8 +35,8 @@ export async function saveVideoToSupabase(videos: YoutubeVideoResponse[]) {
   return { success: true, count: mappedVideos.length };
 }
 
-export async function saveDailyStats(videos: YoutubeVideoResponse[]) {
-  const supabase = await createServerSupabaseClient();
+export async function saveDailyStats(videos: YoutubeVideoResponse[], isScript = false) {
+  const supabase = isScript ? createScriptSupabaseClient() : await createServerSupabaseClient();
   const koreanTime = getKoreanTime();
   const iskoreanTime = new Date(koreanTime).toISOString().split('T')[0];
 
