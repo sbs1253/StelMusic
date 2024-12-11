@@ -33,7 +33,7 @@ jobs:
         run: pnpm install
 
       - name: Run hourly update script
-        run: tsx scripts/update-hourly-stats.ts
+        run: pnpm tsx scripts/update-hourly-stats.ts
 
   update-daily-stats:
     runs-on: ubuntu-latest
@@ -54,4 +54,4 @@ jobs:
         run: pnpm install
 
       - name: Run daily stats script
-        run: tsx scripts/update-daily-stats.ts
+        run: pnpm tsx scripts/update-daily-stats.ts
