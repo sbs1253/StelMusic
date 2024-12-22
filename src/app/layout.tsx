@@ -4,6 +4,7 @@ import ReactQueryClientProvider from 'src/config/ReactQueryClientProvider';
 import { ThemeProvider } from 'src/config/material-tailwind-theme-provider';
 import Footer from '@/components/layout/footer';
 import { Providers } from '@/app/providers';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
   title: 'StelMusic',
@@ -44,6 +45,7 @@ export default function RootLayout({
             </Providers>
           </ThemeProvider>
         </ReactQueryClientProvider>
+        <GoogleAnalytics gaId="G-34LG3TW696" />
       </body>
     </html>
   );
