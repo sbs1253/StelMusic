@@ -10,14 +10,15 @@ export default async function page({ searchParams }) {
     rankType: (searchParams.rankType as VideoFilters['rankType']) || FILTER_OPTIONS.RANK_TYPE.TOTAL,
     playlistType: (searchParams.playlistType as VideoFilters['playlistType']) || FILTER_OPTIONS.PLAYLIST_TYPE.ALL,
   };
-
   const initialData = await getVideos({
     sortBy: initialFilters.sort,
     rankType: initialFilters.rankType,
     playlistType: initialFilters.playlistType,
-    limit: 50,
+    limit: 30,
     offset: 0,
   });
+  // console.log(initialData);
+
   return (
     <Suspense fallback={<RankingSkeleton />}>
       <Ui initialData={initialData} initialFilters={initialFilters} />

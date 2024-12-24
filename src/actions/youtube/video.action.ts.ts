@@ -16,15 +16,15 @@ export async function getVideos({
     // 랭킹 조회 (일간/주간)
     if (['daily', 'weekly'].includes(rankType)) {
       const functionName = rankType === 'daily' ? 'get_daily_rankings' : 'get_weekly_rankings';
-
       const { data, error } = await supabase.rpc(functionName, {
         p_playlist_type: playlistType === 'all' ? null : playlistType,
       });
       if (error) throw error;
+      console.log(data.length);
 
       // 페이지네이션 적용
       const paginatedData = data.slice(offset, offset + limit);
-
+      // console.log(paginatedData);
       return {
         videos: paginatedData,
         totalCount: data.length,

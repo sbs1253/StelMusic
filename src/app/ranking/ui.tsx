@@ -11,7 +11,6 @@ export default function Ui({ initialData, initialFilters }) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(() => new Set());
   const { filters, updateFilter } = useVideoFilters(initialFilters);
   const MAX_SELECTION = 50;
-
   const { videos, isLoading, hasMore, loadMoreRef, containerRef } = useInfiniteScroll({
     initialData,
     filters: {
@@ -48,7 +47,7 @@ export default function Ui({ initialData, initialFilters }) {
       <div ref={loadMoreRef} className="h-10 w-full">
         {isLoading && (
           <div className="flex justify-center py-4">
-            <span>Loading...</span>
+            <div className="animate-spin h-8 w-8 border-4 border-brand-primary border-t-transparent rounded-full"></div>
           </div>
         )}
       </div>

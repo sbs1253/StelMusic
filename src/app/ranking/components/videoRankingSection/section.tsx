@@ -6,7 +6,7 @@ export default function Section({ videos, filters, toggleMusic, selectedMusic })
     <div className="space-y-4">
       {videos.map((video, index) => (
         <Card
-          key={video.video_id}
+          key={`${video.video_id}_${index}`}
           video={video}
           index={index}
           filters={filters}
