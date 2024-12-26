@@ -3,8 +3,9 @@ import './globals.css';
 import ReactQueryClientProvider from 'src/config/ReactQueryClientProvider';
 import { ThemeProvider } from 'src/config/material-tailwind-theme-provider';
 import Footer from '@/components/layout/footer';
-import { Providers } from '@/app/providers';
+import { Providers } from '@/config/providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { AnalyticsProvider } from '@/config/AnalyticsProvider';
 
 export const metadata: Metadata = {
   title: 'StelMusic',
@@ -37,12 +38,14 @@ export default function RootLayout({
       <body className="font-pretendard bg-brand-background min-h-screen">
         <ReactQueryClientProvider>
           <ThemeProvider>
-            <Providers>
-              <div className="min-h-screen flex flex-col mx-auto max-w-lg lg:max-w-5xl bg-white relative">
-                <main className="flex-1">{children}</main>
-                <Footer className="fixed bottom-0 left-0 right-0 max-w-lg lg:max-w-5xl mx-auto bg-white" />
-              </div>
-            </Providers>
+            <AnalyticsProvider>
+              <Providers>
+                <div className="min-h-screen flex flex-col mx-auto max-w-lg lg:max-w-5xl bg-white relative">
+                  <main className="flex-1">{children}</main>
+                  <Footer className="fixed bottom-0 left-0 right-0 max-w-lg lg:max-w-5xl mx-auto bg-white" />
+                </div>
+              </Providers>
+            </AnalyticsProvider>
           </ThemeProvider>
         </ReactQueryClientProvider>
         <GoogleAnalytics gaId="G-34LG3TW696" />
