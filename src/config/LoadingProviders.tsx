@@ -3,11 +3,11 @@
 import { LoadingScreen } from '@/components/common/loadingScreen';
 import { useState, useEffect } from 'react';
 
-interface ProvidersProps {
+interface LoadingProvidersProps {
   children: React.ReactNode;
 }
 
-export function Providers({ children }: ProvidersProps) {
+export function LoadingProviders({ children }: LoadingProvidersProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 

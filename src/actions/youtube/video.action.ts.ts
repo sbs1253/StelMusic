@@ -20,11 +20,9 @@ export async function getVideos({
         p_playlist_type: playlistType === 'all' ? null : playlistType,
       });
       if (error) throw error;
-      console.log(data.length);
 
       // 페이지네이션 적용
       const paginatedData = data.slice(offset, offset + limit);
-      // console.log(paginatedData);
       return {
         videos: paginatedData,
         totalCount: data.length,

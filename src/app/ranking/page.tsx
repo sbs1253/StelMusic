@@ -17,7 +17,6 @@ export default async function page({ searchParams }) {
     limit: 30,
     offset: 0,
   });
-  // console.log(initialData);
 
   return (
     <Suspense fallback={<RankingSkeleton />}>

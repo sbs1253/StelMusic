@@ -28,7 +28,6 @@ export function useInfiniteScroll({
   const [hasMore, setHasMore] = useState(initialData.hasMore);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
-  console.log(initialData);
   const { ref, inView } = useInView({
     threshold: 0,
     rootMargin: '100px',
