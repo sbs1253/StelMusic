@@ -4,10 +4,8 @@ import { HomeSkeleton } from './components/homeSkeleton';
 import { fetchYoutubeChannels } from '@/actions/youtube/youtubeThumbnails.action';
 import { Navbar } from '@/components/common/navBar';
 import { getVideos } from '@/actions/youtube/video.action.ts';
-import { fetchYoutubeVideos } from '@/actions/youtube/youtube.action';
 
 export default async function PlaylistViewer() {
-  await fetchYoutubeVideos();
   const [latestVideos, topVideo, initialChannel] = await Promise.all([
     getVideos({ sortBy: 'date' }),
     getVideos({ sortBy: 'views', limit: 5 }),
