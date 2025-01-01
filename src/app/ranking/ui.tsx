@@ -10,7 +10,7 @@ import PlaybackControl from '@/app/ranking/components/playControl';
 export default function Ui({ initialData, initialFilters }) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(() => new Set());
   const { filters, updateFilter } = useVideoFilters(initialFilters);
-  const MAX_SELECTION = 50;
+  const MAX_SELECTION = 30;
   const { videos, isLoading, hasMore, loadMoreRef, containerRef } = useInfiniteScroll({
     initialData,
     filters: {

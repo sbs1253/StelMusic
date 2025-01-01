@@ -50,7 +50,6 @@ export async function getVideos({
     const { data, error, count } = await query.range(offset, offset + limit - 1);
 
     if (error) throw error;
-
     return {
       videos: data,
       totalCount: count,
@@ -66,7 +65,6 @@ export async function loadMoreVideos(options: LoadMoreOptions) {
   try {
     const offset = (options.page - 1) * (options.limit ?? 30);
     const result = await getVideos({ ...options, offset });
-
     return {
       ...result,
       nextPage: result.hasMore ? options.page + 1 : null,

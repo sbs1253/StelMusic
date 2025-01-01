@@ -28,6 +28,7 @@ export function useInfiniteScroll({
   const [hasMore, setHasMore] = useState(initialData.hasMore);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
+
   const { ref, inView } = useInView({
     threshold: 0,
     rootMargin: '100px',
@@ -80,14 +81,14 @@ export function useInfiniteScroll({
   }, []);
 
   const loadMore = useCallback(async () => {
-    if (isLoading || !hasMore || !inView || timeoutRef.current) return;
+    // 이미 로딩 중이거나, 더 이상 데이터가 없거나, 화면에 보이지 않으면 중단
+    if (isLoading || !hasMore || !inView) return;
 
-    // 이전 타임아웃이 있다면 클리어
+    // 이전 타이머가 있다면 제거
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // 디바운스 적용 (500ms)
     timeoutRef.current = setTimeout(async () => {
       try {
         setIsLoading(true);
@@ -109,10 +110,10 @@ export function useInfiniteScroll({
         console.error('Failed to load more videos:', error);
       } finally {
         setIsLoading(false);
+        timeoutRef.current = null;
       }
-    }, 500); // 500ms 디바운스
+    }, 500);
 
-    // 컴포넌트 언마운트시 타임아웃 클리어
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -120,13 +121,23 @@ export function useInfiniteScroll({
     };
   }, [filters, hasMore, isLoading, inView, page]);
 
-  // inView 상태가 변경될 때만 loadMore 호출
+  // inView 상태 변경 시 loadMore 호출하는 부분을 별도의 useEffect로 분리
   useEffect(() => {
-    if (inView) {
-      loadMore();
-    }
-  }, [inView, loadMore]);
+    let timeoutId: NodeJS.Timeout;
 
+    if (inView && hasMore && !isLoading) {
+      timeoutId = setTimeout(() => {
+        loadMore();
+      }, 100);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [inView, hasMore, isLoading, loadMore]);
+  console.log(videos.length);
   return {
     videos,
     isLoading,
