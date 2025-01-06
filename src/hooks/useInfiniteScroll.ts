@@ -28,7 +28,6 @@ export function useInfiniteScroll({
   const [hasMore, setHasMore] = useState(initialData.hasMore);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
-
   const { ref, inView } = useInView({
     threshold: 0,
     rootMargin: '100px',
@@ -137,7 +136,6 @@ export function useInfiniteScroll({
       }
     };
   }, [inView, hasMore, isLoading, loadMore]);
-  console.log(videos.length);
   return {
     videos,
     isLoading,

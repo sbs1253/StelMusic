@@ -6,10 +6,13 @@ import { VideoRankingSection } from '@/app/ranking/components/videoRankingSectio
 import { useVideoFilters } from '@/hooks/useVideoFilters';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import PlaybackControl from '@/app/ranking/components/playControl';
+import { Skeleton } from '@/app/ranking/components/videoRankingSection/skeleton';
+import { useMinimumLoadingTime } from '@/hooks/useMinimumLoadingTime';
 
 export default function Ui({ initialData, initialFilters }) {
   const [selectedMusic, setSelectedMusic] = useState<Set<string>>(() => new Set());
-  const { filters, updateFilter } = useVideoFilters(initialFilters);
+  const { filters, updateFilter, isPending } = useVideoFilters(initialFilters);
+  const showSkeleton = useMinimumLoadingTime(isPending);
   const MAX_SELECTION = 30;
   const { videos, isLoading, hasMore, loadMoreRef, containerRef } = useInfiniteScroll({
     initialData,
@@ -41,12 +44,25 @@ export default function Ui({ initialData, initialFilters }) {
           </p>
         )}
       </div>
-      <VideoRankingSection videos={videos} filters={filters} toggleMusic={toggleMusic} selectedMusic={selectedMusic} />
+      {showSkeleton ? (
+        <div className="space-y-4">
+          {[...Array(8)].map((_, index) => (
+            <Skeleton key={index} />
+          ))}
+        </div>
+      ) : (
+        <VideoRankingSection
+          videos={videos}
+          filters={filters}
+          toggleMusic={toggleMusic}
+          selectedMusic={selectedMusic}
+        />
+      )}
 
       <PlaybackControl videos={videos} selectedMusic={selectedMusic} />
-      <div ref={loadMoreRef} className="h-10 w-full">
+      <div ref={loadMoreRef} className="h-10 w-full relative">
         {isLoading && (
-          <div className="flex justify-center py-4">
+          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2">
             <div className="animate-spin h-8 w-8 border-4 border-brand-primary border-t-transparent rounded-full"></div>
           </div>
         )}
